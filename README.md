@@ -8,7 +8,7 @@ Thank you for visiting the Swift Swap Ⓟ repository! We are an organization ded
 
 # About Swift Swap Ⓟ
 
-Swift Swap Ⓟ is a platform designed to help students trade parking spots on the WHS campus efficiently and conveniently. Our aim is to alleviate parking congestion by encouraging voluntary spot exchanges among students. By offering a platform for spot swapping, we hope to optimize parking space utilization and reduce parking-related frustrations.
+Swift Swap Ⓟ is a platform designed to help students trade parking spots on the WHS campus efficiently and conveniently. We aim to alleviate parking congestion by encouraging voluntary student spot exchanges. By offering a platform for spot swapping, we hope to optimize parking space utilization and reduce parking-related frustrations.
 
 # How It Works
 
@@ -22,7 +22,7 @@ Community Ratings: To ensure a positive experience, students can provide ratings
 
 # People
 
-Swift Swap is founded and managed by [Zachary Wilson](https://github.com/zw96042) while [Vaibhav Venkat](https://github.com/vibovenkat123) and [Advait Johari](https://github.com/aadijo) are contributors.
+Swift Swap is founded and managed by [Zachary Wilson](https://github.com/zw96042) while [Advait Johari](https://github.com/aadijo) and [Vaibhav Venkat](https://github.com/vibovenkat123) are contributors.
 
 # Contributing
 
