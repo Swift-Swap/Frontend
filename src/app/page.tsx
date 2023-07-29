@@ -7,6 +7,7 @@ export default function Home() {
     const { toast } = useToast()
     const [showed, setShowed] = React.useState(false)
     React.useState(() => {
+        if (typeof localStorage === "undefined") return
         const isShowed = localStorage.getItem("showed-unfinished-website")
         if (isShowed) {
             if (JSON.parse(isShowed)) {
@@ -20,6 +21,7 @@ export default function Home() {
             title: "Unfinished website",
             description: "This website is still under construction. Please check back later!",
             action: <ToastAction altText="Never show again" onClick={() => {
+                if (typeof localStorage === "undefined") return
                 localStorage.setItem("showed-unfinished-website", JSON.stringify(true))
             }}>Dont show again</ToastAction>,
         })
