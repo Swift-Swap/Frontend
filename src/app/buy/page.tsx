@@ -35,7 +35,6 @@ export default function Home() {
         if (typeof localStorage === "undefined") return
         localStorage.setItem("toDate", date.toDateString())
     }
-    if (!fromDate || !toDate) return <></>
     const lotsMapped = lots.map((lot) => {
         return (
             <Button variant={`${currLot == lot.toLowerCase() && !all ? "default" : "secondary"}`} key={lot} onClick={() => {
@@ -48,7 +47,7 @@ export default function Home() {
     })
     const listingsMap = listings.filter((l) => {
         if (all) return true
-        return l.lot.toLowerCase() === currLot.toLowerCase() && fromDate.toDateString() === l.from && toDate.toDateString() === l.to
+        return l.lot.toLowerCase() === currLot.toLowerCase() && fromDate?.toDateString() === l.from && toDate?.toDateString() === l.to
     }).map((listing) => {
         return (
             <Card className="h-fit w-fit flex flex-col items-center text-center" key={listing.id}>
