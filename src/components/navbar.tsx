@@ -20,7 +20,7 @@ export default function Nav() {
             <div className="flex px-4 gap-12 items-center">
                 <Link href="/about"> About </Link>
                 <Link href="/contact"> Contact </Link>
-                <Link href="/sign-in"> Sign In </Link>
+                {!signedIn && <Link href="/sign-in"> Sign In </Link>}
                 <Link href={`${signedIn ? "/buy" : "/get-started"}`}>
                     <Button> {`${signedIn ? "Buy" : "Get Started"}`} </Button>
                 </Link>
