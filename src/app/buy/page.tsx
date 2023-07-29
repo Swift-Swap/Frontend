@@ -38,6 +38,11 @@ export default function Home() {
     const lotsMapped = lots.map((lot) => {
         return (
             <Button variant={`${currLot == lot.toLowerCase() && !all ? "default" : "secondary"}`} key={lot} onClick={() => {
+                if (lot.toLowerCase() === "all") {
+                    setCurrLot(lot.toLowerCase())
+                    setAll(false)
+                    return
+                }
                 setCurrLot(lot.toLowerCase())
                 setAll(false)
             }}>
@@ -47,7 +52,7 @@ export default function Home() {
     })
     const listingsMap = listings.filter((l) => {
         if (all) return true
-        return l.lot.toLowerCase() === currLot.toLowerCase() && fromDate?.toDateString() === l.from && toDate?.toDateString() === l.to
+        return (l.lot.toLowerCase() === currLot.toLowerCase() || currLot.toLowerCase() === "all") && fromDate?.toDateString() === l.from && toDate?.toDateString() === l.to
     }).map((listing) => {
         return (
             <Card className="h-fit w-fit flex flex-col items-center text-center" key={listing.id}>
@@ -77,7 +82,7 @@ export default function Home() {
                         <h4 className="text-sm"> To </h4>
                         <DatePicker setDate={setToDate} date={toDate} fn={onToDateChange} />
                     </div>
-                    <Button variant={`${all ? "default" : "secondary"}`} className={`${all ? "bg-success text-background hover:bg-success/80" : ""} mt-16`} onClick={() => {
+                    <Button variant={`${all ? "default" : "secondary"}`} className={`mt-16`} onClick={() => {
                         setAll(!all)
                     }}> All </Button>
                 </div>
