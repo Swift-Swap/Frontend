@@ -4,6 +4,7 @@
  
 @layer base {
   :root {
+    --success: 112 60% 39%;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
  
@@ -37,6 +38,7 @@
   }
  
   [data-theme='dark'] {
+    --success: 112 100% 76%;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
  

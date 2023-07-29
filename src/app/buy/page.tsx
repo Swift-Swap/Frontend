@@ -12,19 +12,22 @@ import Nav from '@/components/navbar'
 export default function Home() {
     const [fromDate, setFromDate] = React.useState<Date | undefined>(new Date())
     const [toDate, setToDate] = React.useState<Date | undefined>(addDays(new Date(), 2))
-    const [currLot, setCurrLot] = React.useState<string>("wac")
-    const [all, setAll] = React.useState<boolean>(false)
+    const [currLot, setCurrLot] = React.useState<string>("")
+    const [all, setAll] = React.useState<boolean>(true)
     function onFromDateChange(date: Date) {
         setFromDate(date)
+        setAll(false)
     }
     function onToDateChange(date: Date) {
         setToDate(date)
+        setAll(false)
     }
     if (!fromDate || !toDate) return <></>
     const lotsMapped = lots.map((lot) => {
         return (
-            <Button variant={`${currLot == lot.toLowerCase() ? "default" : "secondary"}`} key={lot} onClick={() => {
+            <Button variant={`${currLot == lot.toLowerCase() && !all ? "default" : "secondary"}`} key={lot} onClick={() => {
                 setCurrLot(lot.toLowerCase())
+                setAll(false)
             }}>
                 {lot}
             </Button>
@@ -57,12 +60,12 @@ export default function Home() {
                     </div>
                     <div className="flex flex-col gap-4 mb-4">
                         <h2> Time Range </h2>
-                        <h4 className="text-sm"> To </h4>
-                        <DatePicker setDate={setFromDate} date={fromDate} fn={onFromDateChange} />
                         <h4 className="text-sm"> From </h4>
+                        <DatePicker setDate={setFromDate} date={fromDate} fn={onFromDateChange} />
+                        <h4 className="text-sm"> To </h4>
                         <DatePicker setDate={setToDate} date={toDate} fn={onToDateChange} />
                     </div>
-                    <Button variant={`${all ? "default" : "secondary"}`} className="mt-24" onClick={() => {
+                    <Button variant={`${all ? "default" : "secondary"}`} className={`${all ? "bg-success hover:bg-success/80" : ""} mt-16`} onClick={() => {
                         setAll(!all)
                     }}> All </Button>
                 </div>
