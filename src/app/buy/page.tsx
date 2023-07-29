@@ -10,17 +10,30 @@ import { format } from "date-fns"
 import Nav from '@/components/navbar'
 
 export default function Home() {
-    const [fromDate, setFromDate] = React.useState<Date | undefined>(new Date())
-    const [toDate, setToDate] = React.useState<Date | undefined>(addDays(new Date(), 2))
+    const [fromDate, setFromDate] = React.useState<Date | undefined>(undefined)
+    const [toDate, setToDate] = React.useState<Date | undefined>(undefined)
     const [currLot, setCurrLot] = React.useState<string>("")
     const [all, setAll] = React.useState<boolean>(true)
+    React.useEffect(() => {
+        if (typeof localStorage === "undefined") return
+        const toDate = localStorage.getItem("toDate")
+        const fromDate = localStorage.getItem("fromDate")
+        if (toDate) setToDate(new Date(toDate))
+        if (fromDate) setFromDate(new Date(fromDate))
+        if (!fromDate) setFromDate(new Date())
+        if (!toDate) setToDate(addDays(new Date(), 2))
+    }, [])
     function onFromDateChange(date: Date) {
         setFromDate(date)
         setAll(false)
+        if (typeof localStorage === "undefined") return
+        localStorage.setItem("fromDate", date.toDateString())
     }
     function onToDateChange(date: Date) {
         setToDate(date)
         setAll(false)
+        if (typeof localStorage === "undefined") return
+        localStorage.setItem("toDate", date.toDateString())
     }
     if (!fromDate || !toDate) return <></>
     const lotsMapped = lots.map((lot) => {
@@ -65,7 +78,7 @@ export default function Home() {
                         <h4 className="text-sm"> To </h4>
                         <DatePicker setDate={setToDate} date={toDate} fn={onToDateChange} />
                     </div>
-                    <Button variant={`${all ? "default" : "secondary"}`} className={`${all ? "bg-success hover:bg-success/80" : ""} mt-16`} onClick={() => {
+                    <Button variant={`${all ? "default" : "secondary"}`} className={`${all ? "bg-success text-background hover:bg-success/80" : ""} mt-16`} onClick={() => {
                         setAll(!all)
                     }}> All </Button>
                 </div>
