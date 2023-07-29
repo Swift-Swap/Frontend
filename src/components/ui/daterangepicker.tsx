@@ -15,7 +15,7 @@ import {
 
 interface Props {
     setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
-    date: Date
+    date: Date | undefined
     fn: (d: Date) => void
 }
 export function DatePicker(props: Props) {
