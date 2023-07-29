@@ -1,83 +1,44 @@
 "use client"
-import { DatePicker } from '@/components/ui/daterangepicker'
-import { addDays } from 'date-fns'
-import Link from 'next/link'
 import React from 'react'
-import { DateRange } from 'react-day-picker'
-import { Button } from '@/components/ui/button'
-import { listings, lots } from '@/lib/utils'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-
-import { format } from "date-fns"
-
+import Image from 'next/image'
+import { useToast } from '@/components/ui/use-toast'
+import { ToastAction } from '@/components/ui/toast'
 export default function Home() {
-    const [fromDate, setFromDate] = React.useState<Date | undefined>(new Date())
-    const [toDate, setToDate] = React.useState<Date | undefined>(addDays(new Date(), 2))
-    const [currLot, setCurrLot] = React.useState<string>("wac")
-    const [all, setAll] = React.useState<boolean>(false)
-    function onFromDateChange(date: Date) {
-        setFromDate(date)
-    }
-    function onToDateChange(date: Date) {
-        setToDate(date)
-    }
-    if (!fromDate || !toDate) return <></>
-    const lotsMapped = lots.map((lot) => {
-        return (
-            <Button variant={`${currLot == lot.toLowerCase() ? "default" : "secondary"}`} key={lot} onClick={() => {
-                setCurrLot(lot.toLowerCase())
-            }}>
-                {lot}
-            </Button>
-        )
-    })
-    const listingsMap = listings.filter((l) => {
-            if (all) return true
-            return l.lot.toLowerCase() === currLot.toLowerCase() && fromDate.toDateString() === l.from && toDate.toDateString() === l.to
-        }).map((listing) => {
-        return (
-            <Card className="h-fit w-fit flex flex-col items-center text-center" key={listing.id}>
-                <CardHeader>
-                    <CardTitle className="text-xl"> {format(new Date(listing.from), "LLL dd")} - {format(new Date(listing.to), "LLL dd")}  </CardTitle>
-                    <CardDescription className="text-md"> #{listing.lotNum} </CardDescription>
-                    <CardDescription className="text-md"> {listing.lot} </CardDescription>
-                    <Button> Buy </Button>
-                </CardHeader>
-            </Card>
-        )
+    const { toast } = useToast()
+    const [showed, setShowed] = React.useState(false)
+    React.useState(() => {
+        const isShowed = localStorage.getItem("showed-unfinished-website")
+        if (isShowed) {
+            if (JSON.parse(isShowed)) {
+                console.log(isShowed)
+                setShowed(true)
+                return
+            }
+        }
+        if (showed) return
+        toast({
+            title: "Unfinished website",
+            description: "This website is still under construction. Please check back later!",
+            action: <ToastAction altText="Never show again" onClick={() => {
+                localStorage.setItem("showed-unfinished-website", JSON.stringify(true))
+            }}>Dont show again</ToastAction>,
+        })
+        setShowed(true)
     })
     return (
-        <main className="w-screen h-screen bg-background max-w-full overflow-x-hidden">
-            <nav className="p-4 px-8 border-b-2 border-b-foreground-50 flex justify-between w-full bg-background">
-                <Link href="/"> Logo </Link>
-            </nav>
-            <div className="w-full flex">
-                {/* Add a sidebar container and apply fixed positioning */}
-                <div className={`px-12 py-20 xl:w-1/4 border-r-2 border-r-foreground-50 h-screen sticky top-0`}>
-                    <div className="w-3/4">
-                        {/* Sidebar content */}
-                        <div className="flex flex-col gap-4 mb-24">
-                            <h2> Parking Lot </h2>
-                            {lotsMapped}
-                        </div>
-                        <div className="flex flex-col gap-4 mb-4">
-                            <h2> Time Range </h2>
-                            <h4 className="text-sm"> To </h4>
-                            <DatePicker setDate={setFromDate} date={fromDate} fn={onFromDateChange} />
-                            <h4 className="text-sm"> From </h4>
-                            <DatePicker setDate={setToDate} date={toDate} fn={onToDateChange} />
-                        </div>
-                        <Button variant={`${all ? "default" : "secondary"}`} className="mt-24" onClick={() => {
-                            setAll(!all)
-                        }}> All </Button>
-                    </div>
+        <div className="flex flex-col justify-center items-center w-screen flex-1">
+            <div className="flex justify-start gap-40 items-center w-2/3">
+                <div className="flex flex-col gap-8">
+                    <h1 className="text-4xl"> Pave the way for an easy day! </h1>
+                    <p>
+                        A platform designed to help students trade parking spots on campus efficiently and conveniently. We aim to alleviate parking congestion by encouraging voluntary student spot exchanges.
+                    </p>
                 </div>
-                <div className="grid w-full h-fit">
-                    <div className="grid grid-cols-5 gap-8 p-12">
-                        {listingsMap}
-                    </div>
-                </div>
+                <Image
+                    src="https://lh3.googleusercontent.com/pw/AIL4fc8HD64g7VHf2szaXEpWXVo3sMz0vY2PEtYM05IRJivYi1ryqvxb4BDxYqxoonLzjr4RyGUVRoSq3bCrw-k2e2YhSt_063DfKCYBTFE0go5D8NxglYUdPIiotqm3q7Wfp1vtzE2dZ5JeFnJnf9ac3vvI4mwChgQQFXZdxTXMmKEi_cZ-O0S2AiRHuESwr8O3F9fMAwTA6sOFZKWXmlYBtRN7eKZFawxQCVCJIle4atvQhCh55cEWr_uSRsR1hQIfafVheRTuJ2WNMrUEqFDiLOY5QYP_MI6oOVv3MJMDJojRbGUy_MwOxH4A_Fr_tY5gQHBFuqrmzeukPCrAm2cpSK_E0ys8Dja_c5YZSa3ElTVhFhgd4wRHbGAdbi53q3PsH4bd4cMzK1cqU1RFPHENL1hVMBmB3xJUrQSAilOR7dlxkxLcnAUieXy6vkfBCnt3ysqyD3XHDx55jWOK515garJSs1k4Ds5KH4PB9jGUwNkuGBqiqg1Q3uJqLARepgFAF_fMHo2y6za9lNo3mvNgNriIxq4UkEU9eTWmMPYiGgB5b_YkH_7PUKyf3eDqbBHqrGp-cvy-6pUuIYQcplooCfqAeTy_KvMVtWUk5rYbjEycoFpsHMkDK32RJArGc8akVSGcIIgdFXzKZBuDAy4s0Wh0VTj9noMTT0bWq-FV07bA2SgjEt2l0LT0Fox6QTVthWe_o0zk2IYMmBqJXo5A5bG1OhGxw9XcLN-vHdp9oazGM9T5LYNzrqvwIEQmIaJUPkQMairOZijFbAyxUdtfF5vriHz_tExvee77WfzFoV3iK7qam8CAdFtzq_rTZNeEahsC8p41byAArGBQozAXUiG2ge-X4ojlM2aVEiGMClRzKsKIkijLiJUICNX-797JkwMS-nBqnIVTmhWbCuVkWrkqy-ajPR5X0biFdZ9QbhWkjHYJxMIlzVYhdyT7CR03FNWOiVMlpDzPnNZcLKiIQpMllTRAAj8BZjr43twVkl61nGQZ-u3JwRp1Z2CMSQ7libo=w660-h660-s-no?authuser=3"
+                    width={500} height={500} alt={"Image of car"} />
             </div>
-        </main>
+        </div>
     )
 }
+
