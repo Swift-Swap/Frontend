@@ -19,9 +19,23 @@ export default function Nav() {
                 <p className="text-md">SwiftSwap</p>
             </Link>
             <div className="flex px-4 gap-12 items-center">
-                <Link href="/about"> About </Link>
-                <Link href="/contact"> Contact </Link>
-                {!signedIn && <Link href="/sign-in"> Sign In </Link>}
+                <Link href="/about"> 
+                    <Button variant="ghost">
+                        About 
+                    </Button>
+                </Link>
+                <Link href="/contact"> 
+                    <Button variant="ghost">
+                        Contact
+                    </Button>
+                </Link>
+                {!signedIn && 
+                    <Link href="/sign-in"> 
+                        <Button variant="ghost">
+                            Sign In
+                        </Button>
+                    </Link>
+                }
                 <Link href={`${signedIn ? "/buy" : "/get-started"}`}>
                     <Button> {`${signedIn ? "Buy" : "Get Started"}`} </Button>
                 </Link>
