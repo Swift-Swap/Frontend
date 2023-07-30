@@ -13,7 +13,7 @@ export function PermDenied(props: Props) {
                 <br />
                 Your email address {props.emailAddr} is not an eanes email address.
                 <br />
-                Please sign up with an eanes Email address.
+                Please sign up with an Eanes email address.
             </p>
         </div>
     );
