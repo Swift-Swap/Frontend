@@ -53,6 +53,7 @@ export default function Home() {
                     </Link>
                 </div>
                 <Image
+                    priority
                     className={`mt-5 w-[300px] h-auto md:w-[400px] lg:w-[500px]`}
                     src="https://lh3.googleusercontent.com/pw/AIL4fc8VaF4IJpb0NyMpb5cdAGeDw8431_sb2UYn624KbZlE30mrwuQOYEWBR9HgFmllmNa6wSUymRaT0nSpiJg3iIHZQqf5xmCScIk5xOdqZSa1DbBTx9DOkCsnKRsbdefbbUKPuWU-AnHZb__PZ_G1Wvk=w660-h660-s-no?authuser=0"
                     width={300} height={300} alt={"Image of car"} />
