@@ -19,9 +19,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-
         <ClerkProvider>
             <html lang="en" suppressHydrationWarning>
+            <head>
+                <link rel="preload" href="https://drive.google.com/uc?id=1xp4jSXj40L5MtFTQUQBOBQsDJGTC0std" as="image"/>
+            </head>
                 <body className={inter.className}>
                     <Providers>
                         <main className="w-screen h-screen bg-background max-w-full overflow-x-hidden flex flex-col">

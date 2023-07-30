@@ -35,13 +35,16 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
+    --primary-blue: 232 57% 37%;
+    --primary-red: 358 85% 52%;
   }
 
   [data-theme="dark"] {
     --success: 112 100% 76%;
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
+    --primary-blue: 232 45% 35%;
+    --primary-red: 0 54% 40%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
@@ -75,7 +78,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient-to-r
   }
 }
 

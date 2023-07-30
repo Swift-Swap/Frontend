@@ -49,7 +49,9 @@ export default function Nav() {
                                 </Link>
                             )}
                             <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
-                                <Button> {`${isSignedIn ? "Buy" : "Get Started"}`} </Button>
+                                <div className="bg-gradient-to-b from-primary-red to-primary-blue !p-[0.13em] flex justify-center items-center rounded-lg">
+                                    <Button className="text-black bg-background hover:bg-background w-full h-max"> {`${isSignedIn ? "Buy" : "Get Started"}`} </Button>
+                                </div>
                             </Link>
                         </div>
                     </SheetContent>
@@ -68,7 +70,9 @@ export default function Nav() {
                     </Link>
                 )}
                 <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
-                    <Button> {`${isSignedIn ? "Buy" : "Get Started"}`} </Button>
+                    <div className="bg-gradient-to-b from-primary-red to-primary-blue !p-[0.13em] flex justify-center items-center rounded-lg">
+                        <Button className="text-black bg-background hover:bg-background w-full h-max"> {`${isSignedIn ? "Buy" : "Get Started"}`} </Button>
+                    </div>
                 </Link>
                 <div className={`${!isSignedIn ? "hidden" : ""}`}>
                     {systemTheme === "dark" && <UserButton afterSignOutUrl="/" appearance={{
