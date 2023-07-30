@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-export const lots = ["All", "WAC", "PAC", "Tennis Courts", "Stadium"] as const
+export const lots = ["Any", "WAC", "PAC", "Tennis Courts", "Stadium"] as const
 export type TLot = typeof lots[number]
 
 export type Listing = {
