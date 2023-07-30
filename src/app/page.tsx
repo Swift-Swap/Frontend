@@ -54,7 +54,7 @@ export default function Home() {
                 </div>
                 <Image
                     className={`mt-5 w-[300px] h-auto md:w-[400px] lg:w-[500px]`}
-                    src="https://lh3.googleusercontent.com/pw/AIL4fc8HD64g7VHf2szaXEpWXVo3sMz0vY2PEtYM05IRJivYi1ryqvxb4BDxYqxoonLzjr4RyGUVRoSq3bCrw-k2e2YhSt_063DfKCYBTFE0go5D8NxglYUdPIiotqm3q7Wfp1vtzE2dZ5JeFnJnf9ac3vvI4mwChgQQFXZdxTXMmKEi_cZ-O0S2AiRHuESwr8O3F9fMAwTA6sOFZKWXmlYBtRN7eKZFawxQCVCJIle4atvQhCh55cEWr_uSRsR1hQIfafVheRTuJ2WNMrUEqFDiLOY5QYP_MI6oOVv3MJMDJojRbGUy_MwOxH4A_Fr_tY5gQHBFuqrmzeukPCrAm2cpSK_E0ys8Dja_c5YZSa3ElTVhFhgd4wRHbGAdbi53q3PsH4bd4cMzK1cqU1RFPHENL1hVMBmB3xJUrQSAilOR7dlxkxLcnAUieXy6vkfBCnt3ysqyD3XHDx55jWOK515garJSs1k4Ds5KH4PB9jGUwNkuGBqiqg1Q3uJqLARepgFAF_fMHo2y6za9lNo3mvNgNriIxq4UkEU9eTWmMPYiGgB5b_YkH_7PUKyf3eDqbBHqrGp-cvy-6pUuIYQcplooCfqAeTy_KvMVtWUk5rYbjEycoFpsHMkDK32RJArGc8akVSGcIIgdFXzKZBuDAy4s0Wh0VTj9noMTT0bWq-FV07bA2SgjEt2l0LT0Fox6QTVthWe_o0zk2IYMmBqJXo5A5bG1OhGxw9XcLN-vHdp9oazGM9T5LYNzrqvwIEQmIaJUPkQMairOZijFbAyxUdtfF5vriHz_tExvee77WfzFoV3iK7qam8CAdFtzq_rTZNeEahsC8p41byAArGBQozAXUiG2ge-X4ojlM2aVEiGMClRzKsKIkijLiJUICNX-797JkwMS-nBqnIVTmhWbCuVkWrkqy-ajPR5X0biFdZ9QbhWkjHYJxMIlzVYhdyT7CR03FNWOiVMlpDzPnNZcLKiIQpMllTRAAj8BZjr43twVkl61nGQZ-u3JwRp1Z2CMSQ7libo=w660-h660-s-no?authuser=3"
+                    src="https://lh3.googleusercontent.com/pw/AIL4fc8VaF4IJpb0NyMpb5cdAGeDw8431_sb2UYn624KbZlE30mrwuQOYEWBR9HgFmllmNa6wSUymRaT0nSpiJg3iIHZQqf5xmCScIk5xOdqZSa1DbBTx9DOkCsnKRsbdefbbUKPuWU-AnHZb__PZ_G1Wvk=w660-h660-s-no?authuser=0"
                     width={300} height={300} alt={"Image of car"} />
             </div>
         </div>
