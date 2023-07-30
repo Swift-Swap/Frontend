@@ -33,7 +33,7 @@ export default function Home() {
         setShowed(true)
     })
     return (
-        <div className="flex flex-col justify-center items-center w-screen flex-1 fixed mt-32 p-2">
+        <div className="flex flex-col justify-center items-center w-screen flex-1 p-2">
             <div className="flex flex-col justify-start md:w-2/3 gap-8 items-center w-full text-center">
                 <h1 className="xl:text-7xl lg:text-6xl text-5xl font-semibold"> Pave the way for an easy day! </h1>
                 <p className="text-muted-foreground text-lg">
@@ -54,7 +54,7 @@ export default function Home() {
                 </div>
                 <Image
                     priority
-                    className={`mt-5 w-[300px] h-auto md:w-[400px] lg:w-[500px]`}
+                    className={`mt-5 w-[200px] sm:w-[300px] h-auto md:w-[400px] lg:w-[500px]`}
                     src="https://lh3.googleusercontent.com/pw/AIL4fc8VaF4IJpb0NyMpb5cdAGeDw8431_sb2UYn624KbZlE30mrwuQOYEWBR9HgFmllmNa6wSUymRaT0nSpiJg3iIHZQqf5xmCScIk5xOdqZSa1DbBTx9DOkCsnKRsbdefbbUKPuWU-AnHZb__PZ_G1Wvk=w660-h660-s-no?authuser=0"
                     width={300} height={300} alt={"Image of car"} />
             </div>
