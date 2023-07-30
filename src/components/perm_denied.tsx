@@ -11,7 +11,7 @@ export function PermDenied(props: Props) {
             <p className="mt-5 text-xl text-center">
                 You do not have permission to access this page.
                 <br />
-                Your email address {props.emailAddr} is not an eanes email address.
+                Your email address {props.emailAddr} is not an Eanes email address.
                 <br />
                 Please sign up with an Eanes email address.
             </p>
