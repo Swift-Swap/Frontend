@@ -8,6 +8,8 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 
 import { format } from "date-fns"
 import Nav from '@/components/navbar'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Menu } from 'lucide-react'
 
 export default function Home() {
     const [fromDate, setFromDate] = React.useState<Date | undefined>(undefined)
@@ -66,10 +68,40 @@ export default function Home() {
         )
     })
     return (
-        <div className="w-full flex">
+        <div className="w-full flex flex-col md:flex-row p-2">
+            <div className="md:hidden">
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="outline">
+                            <Menu />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left">
+                        <div className={`px-12 py-20 w-full h-screen sticky top-0`}>
+                            <div className="w-3/4">
+                                {/* Sidebar content */}
+                                <div className="flex flex-col gap-4 mb-24">
+                                    <h2> Parking Lot </h2>
+                                    {lotsMapped}
+                                </div>
+                                <div className="flex flex-col gap-4 mb-4">
+                                    <h2> Time Range </h2>
+                                    <h4 className="text-sm"> From </h4>
+                                    <DatePicker setDate={setFromDate} date={fromDate} fn={onFromDateChange} />
+                                    <h4 className="text-sm"> To </h4>
+                                    <DatePicker setDate={setToDate} date={toDate} fn={onToDateChange} />
+                                </div>
+                                <Button variant={`${all ? "default" : "secondary"}`} className={`mt-16`} onClick={() => {
+                                    setAll(!all)
+                                }}> All </Button>
+                            </div>
+                        </div>
+                    </SheetContent>
+                </Sheet>
+            </div>
             {/* Add a sidebar container and apply fixed positioning */}
-            <div className={`px-12 py-20 xl:w-1/4 border-r-2 border-r-foreground-50 h-screen sticky top-0`}>
-                <div className="w-3/4">
+            <div className={`px-12 py-20 xl:w-1/4 lg:w-1/3 md:w-1/2 md:flex hidden border-r-2 border-r-foreground-50 h-screen sticky top-0`}>
+                <div className="lg:w-3/4 w-full">
                     {/* Sidebar content */}
                     <div className="flex flex-col gap-4 mb-24">
                         <h2> Parking Lot </h2>
@@ -87,8 +119,8 @@ export default function Home() {
                     }}> All </Button>
                 </div>
             </div>
-            <div className="grid w-full h-fit">
-                <div className="grid grid-cols-5 gap-8 p-12">
+            <div className="grid w-full h-fit place-items-center">
+                <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-1 sm:grid-cols-2 gap-8 p-12">
                     {listingsMap}
                 </div>
             </div>
