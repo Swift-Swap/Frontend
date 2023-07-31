@@ -1,15 +1,15 @@
 "use client";
 import { DatePicker } from "@/components/ui/daterangepicker";
-import { addDays } from "date-fns";
+import { addDays, parse } from "date-fns";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   TAcceptedLot,
   TLot,
-  listings,
   lots,
   acceptedLots,
   CreateListing,
+  ListingResponse,
 } from "@/lib/utils";
 import {
   Card,
@@ -45,8 +45,15 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 
+async function getListings(): Promise<ListingResponse[]> {
+    const res = await fetch("/api/listing", {method: "GET"});
+    const json = await res.json() as ListingResponse[];
+    return json;
+}
+
 export default function Home() {
   const [fromDate, setFromDate] = React.useState<Date | undefined>(undefined);
+  const [listings, setListings] = React.useState<ListingResponse[] | null>([]); 
   function onFromDateChange(date: Date) {
     setFromDate(date);
     setAll(false);
@@ -69,7 +76,13 @@ export default function Home() {
     const fromDate = localStorage.getItem("fromDate");
     toDate ? setToDate(new Date(toDate)) : setToDate(addDays(new Date(), 2));
     fromDate ? setFromDate(new Date(fromDate)) : setFromDate(new Date());
+    async function main() {
+        const res = await getListings();
+        setListings(res);
+    }
+    main()
   }, []);
+  if (!listings) return null;
   if (!isLoaded) return null;
   if (
     !user?.primaryEmailAddress?.emailAddress?.endsWith("@eanesisd.net") &&
@@ -95,29 +108,31 @@ export default function Home() {
   });
   const listingsMap = listings
     .filter((l) => {
+      const new_start = parse(l.start_date, "yyyy-MM-dd", new Date());
+      const new_end = parse(l.end_date, "yyyy-MM-dd", new Date()); 
       if (all) return true;
       return (
         (l.lot.toLowerCase() === currLot.toLowerCase() ||
           currLot.toLowerCase() === lots[0].toLowerCase()) &&
-        fromDate?.toDateString() === l.from &&
-        toDate?.toDateString() === l.to
+        fromDate?.toDateString() === new_start.toDateString() &&
+        toDate?.toDateString() === new_end.toDateString()
       );
     })
     .map((listing) => {
       return (
         <Card
           className="h-fit w-fit flex flex-col items-center text-center"
-          key={listing.id}
+          key={listing.spaceid}
         >
           <CardHeader>
             <CardTitle className="text-md md:text-xl">
               {" "}
-              {format(new Date(listing.from), "LLL dd")} -{" "}
-              {format(new Date(listing.to), "LLL dd")}{" "}
+              {format(new Date(listing.start_date), "LLL dd")} -{" "}
+              {format(new Date(listing.end_date), "LLL dd")}{" "}
             </CardTitle>
             <CardDescription className="text-sm md:text-md">
               {" "}
-              #{listing.lotNum}{" "}
+              #{listing.spotnumber}{" "}
             </CardDescription>
             <CardDescription className="text-sm md:text-md">
               {" "}

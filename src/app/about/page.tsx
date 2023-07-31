@@ -5,13 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function About() {
-  const { systemTheme } = useTheme();
-  if (!systemTheme) return null;
   return (
     <div
-      className={`w-full flex-1 flex flex-col items-center py-12 text-center bg-gradient-to-br to-primary-red ${
-        systemTheme === "dark" ? "via-background" : ""
-      } from-primary-blue text-white`}
+      className={`w-full flex-1 flex flex-col items-center py-12 text-center bg-blur bg-cover bg-no-repeat bg-center`}
     >
       <div className="lg:w-1/3 md:w-1/2 w-4/5 flex-1 flex flex-col items-center text-center">
         <h1 className="text-4xl font-bold">About</h1>

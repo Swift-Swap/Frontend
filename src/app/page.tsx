@@ -1,19 +1,16 @@
 "use client";
 import React from "react";
-import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowRightCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { PermDenied } from "@/components/perm_denied";
-import { useTheme } from "next-themes";
 export default function Home() {
   const { toast } = useToast();
   const [showed, setShowed] = React.useState(false);
   const { isLoaded, isSignedIn, user } = useUser();
-  const { systemTheme } = useTheme();
 
   React.useState(() => {
     if (typeof localStorage === "undefined") return;
@@ -63,7 +60,7 @@ export default function Home() {
       <div className="flex justify-center items-center gap-4 p-2 w-screen flex-1 flex-col ">
         <div className={`flex flex-col justify-center items-center gap-4 p-2 w-screen flex-1`}>
           <div className="flex flex-col justify-center items-center gap-4 p-2 w-full md:w-3/4 lg:w-1/2 xl:w-1/3 flex-1">
-            <h1 className="text-center text-5xl md:text-6xl lg:text-7xl font-bold">
+            <h1 className="text-center text-5xl md:text-6xl lg:text-7xl font-bold [text-shadow:_9px_9px_5px_rgb(0_0_0_/_40%)]">
               {" "}
               Swift Swap{" "}
             </h1>
