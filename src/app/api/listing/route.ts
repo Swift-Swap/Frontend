@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
 
 
 export async function GET() {
-    const { userId } = auth();
     const res = await fetch(
         `https://qht4r4mdj7qvem5vmmhhwsbd7m0znfem.lambda-url.us-east-2.on.aws/api/v1/listings`,
         {
