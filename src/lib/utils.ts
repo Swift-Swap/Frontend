@@ -9,7 +9,6 @@ export const acceptedLots = ["WAC", "PAC", "Tennis Courts", "Stadium"] as const;
 export type TAcceptedLot = (typeof acceptedLots)[number];
 export type TLot = (typeof lots)[number];
 
-
 export interface CreateListing {
   spotnumber: number;
   lot: TAcceptedLot;
@@ -18,12 +17,12 @@ export interface CreateListing {
 }
 
 export interface ListingResponse {
-    spaceid: string;
-    spotnumber: number;
-    lot: TAcceptedLot;
-    days: number;
-    start_date: string;
-    end_date: string;
-    price: number;
-    user_id: string;
+  spaceid: string;
+  spotnumber: number;
+  lot: TAcceptedLot;
+  days: number;
+  start_date: string;
+  end_date: string;
+  price: number;
+  user_id: string;
 }

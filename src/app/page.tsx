@@ -58,7 +58,9 @@ export default function Home() {
       className={`flex flex-col justify-center items-center w-screen flex-1 p-2  text-white bg-westlake bg-no-repeat bg-center bg-cover`}
     >
       <div className="flex justify-center items-center gap-4 p-2 w-screen flex-1 flex-col ">
-        <div className={`flex flex-col justify-center items-center gap-4 p-2 w-screen flex-1`}>
+        <div
+          className={`flex flex-col justify-center items-center gap-4 p-2 w-screen flex-1`}
+        >
           <div className="flex flex-col justify-center items-center gap-4 p-2 w-full md:w-3/4 lg:w-1/2 xl:w-1/3 flex-1">
             <h1 className="text-center text-5xl md:text-6xl lg:text-7xl font-bold [text-shadow:_9px_9px_5px_rgb(0_0_0_/_40%)]">
               {" "}
@@ -72,7 +74,7 @@ export default function Home() {
               <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
                 <Button className="flex items-center gap-2 w-[200px]">
                   {isSignedIn ? "Buy" : "Get Started"}
-                  <ArrowRight height={24}/>
+                  <ArrowRight height={24} />
                 </Button>
               </Link>
               <Link href="/about">
