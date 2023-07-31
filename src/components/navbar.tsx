@@ -16,7 +16,7 @@ export default function Nav() {
     const { systemTheme } = useTheme();
     if (!isLoaded) return null
     return (
-        <nav className="p-4 border-b-2 border-b-foreground-50 flex gap-24 w-full justify-between bg-background items-center px-4 md:px-8 lg:px-14">
+        <nav className="p-4 border-b-2 border-b-foreground-50 flex gap-24 w-full justify-between bg-background items-center px-4 md:px-18 lg:px-36">
             <Link href="/" className="flex items-center gap-4">
                 <Image
                     priority
@@ -81,7 +81,7 @@ export default function Nav() {
                             userButtonPopoverFooter: "hidden",
                         }
                     }} />}
-                    {systemTheme === "light" && <UserButton appearance={{}} afterSignOutUrl="/" />}
+                    {systemTheme === "light" && <UserButton appearance={{}} afterSignOutUrl="/" afterSwitchSessionUrl="/"/>}
                 </div>
             </div>
         </nav>

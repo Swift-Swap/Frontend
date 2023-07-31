@@ -56,7 +56,7 @@ export default function Home() {
     return (
         <div className={`flex flex-col justify-center items-center w-screen flex-1 p-2 bg-gradient-to-br to-primary-red ${systemTheme === "dark" ? "via-background" : ""} from-primary-blue text-white`}>
             <div className="flex justify-center items-center gap-4 p-2 w-screen flex-1 flex-col bg-westlake bg-no-repeat bg-center bg-contain">
-                <div className="flex flex-col gap-4 p-2 w-screen flex-1 justify-between py-8 px-4 md:py-14 md:px-8 lg:py-18 lg:px-14">
+                <div className="flex flex-col gap-4 p-2 w-screen flex-1 justify-between py-8 px-4 md:py-14 md:px-18 lg:py-18 lg:px-36">
                     <div className="flex flex-col justify-center gap-4 w-full md:w-3/4 lg:w-1/2">
                         <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold">
                             Pave The Way
