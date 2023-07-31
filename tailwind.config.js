@@ -18,7 +18,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         westlake:
-          "url('https://drive.google.com/uc?id=1xp4jSXj40L5MtFTQUQBOBQsDJGTC0std')",
+          "url('https://drive.google.com/uc?id=1Ak59dFOvgOPfjmpEwW4iykMD61ECbdTA')",
       },
       colors: {
         border: "hsl(var(--border))",
