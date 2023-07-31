@@ -77,6 +77,9 @@ export default function Nav() {
                 <div className={`${!isSignedIn ? "hidden" : ""}`}>
                     {systemTheme === "dark" && <UserButton afterSignOutUrl="/" appearance={{
                         baseTheme: dark,
+                        elements: {
+                            userButtonPopoverFooter: "hidden",
+                        }
                     }} />}
                     {systemTheme === "light" && <UserButton appearance={{}} afterSignOutUrl="/" />}
                 </div>
