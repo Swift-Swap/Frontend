@@ -10,13 +10,14 @@ import { UserButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
-
+import {usePathname} from "next/navigation"
 export default function Nav() {
+    const pathname = usePathname();
     const { isLoaded, isSignedIn, user } = useUser();
     const { systemTheme } = useTheme();
     if (!isLoaded) return null
     return (
-        <nav className="p-4 border-b-2 border-b-foreground-50 flex gap-24 w-full justify-between bg-background items-center px-4 md:px-18 lg:px-36">
+        <nav className={`p-4 border-b-2 border-b-foreground-50 flex gap-24 w-full justify-between bg-background items-center px-2 md:px-8`}>
             <Link href="/" className="flex items-center gap-4">
                 <Image
                     priority

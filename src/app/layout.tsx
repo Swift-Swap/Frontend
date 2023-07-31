@@ -28,7 +28,7 @@ export default function RootLayout({
                     <Providers>
                         <main className="w-screen h-screen bg-background max-w-full overflow-x-hidden flex flex-col">
                             <Nav />
-                            {children}
+                                {children}
                             <Toaster />
                         </main>
                     </Providers>
