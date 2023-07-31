@@ -78,10 +78,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-gradient-to-r
+    @apply bg-gradient-to-r;
   }
 }
 
 .cl-internal-b3fm6y {
-    display: none !important;
+  display: none !important;
 }

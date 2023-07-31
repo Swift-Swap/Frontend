@@ -264,3 +264,10 @@ export const listings: Listing[] = [
     from: new Date("Tue Oct 03 2023").toDateString(),
   },
 ];
+
+export interface CreateListing {
+  spotnumber: number;
+  lot: TAcceptedLot;
+  fromdate: string;
+  todate: string;
+}
