@@ -81,7 +81,7 @@ export default function Home() {
               <Link href="/about">
                 <Button
                   variant="outline"
-                  className="bg-transparent border-white border-2"
+                  className="bg-transparent border-white border-2 w-[200px]"
                 >
                   About
                 </Button>
