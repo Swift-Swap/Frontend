@@ -374,7 +374,6 @@ function AddSheet() {
                   fromdate: new_from,
                   todate: new_to,
                 };
-                console.log(process.env.API_KEY);
                 const res = await fetch("/api/listing", {
                   method: "POST",
                   body: JSON.stringify(body),

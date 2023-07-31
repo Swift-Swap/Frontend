@@ -5,9 +5,6 @@ import { ListingResponse } from "@/lib/utils";
 export async function POST(req: NextRequest) {
     const json = await req.json();
     const { userId } = auth();
-    if (!userId) {
-        return NextResponse.json({ error: "Not logged in" }, { status: 401 });
-    }
     const res = await fetch(
         `https://jeqhrywz6udusjzryqr76kwoxa0dxlvv.lambda-url.us-east-2.on.aws/api/v1/create/listing?owner_id=${userId}`,
         {
@@ -27,14 +24,12 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
     const { userId } = auth();
-    if (!userId) {
-        return NextResponse.json({ error: "Not logged in" }, { status: 401 });
-    }
     const res = await fetch(
         `https://qht4r4mdj7qvem5vmmhhwsbd7m0znfem.lambda-url.us-east-2.on.aws/api/v1/listings`,
         {
             method: "GET",
             headers: {
+                "Content-Type": "application/json",
                 "X-API-KEY": process.env.API_KEY!,
             }
         }
