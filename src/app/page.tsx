@@ -73,9 +73,9 @@ export default function Home() {
             </p>
             <div className="flex justify-center items-between gap-4 p-2 w-full">
               <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
-                <Button className="flex items-center gap-2">
+                <Button className="flex items-center gap-2 w-[200px]">
                   {isSignedIn ? "Buy" : "Get Started"}
-                  <ArrowRight className="w-1/3 h-auto" />
+                  <ArrowRight height={24}/>
                 </Button>
               </Link>
               <Link href="/about">
