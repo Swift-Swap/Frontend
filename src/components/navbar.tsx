@@ -53,7 +53,7 @@ export default function Nav() {
               )}
               <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
                 <div className="bg-gradient-to-b from-primary-red to-primary-blue !p-[0.13em] flex justify-center items-center rounded-lg">
-                  <Button className="text-foreground bg-background hover:bg-background w-full h-max">
+                  <Button className="text-foreground bg-background hover:bg-background/0 w-full h-max">
                     {" "}
                     {`${isSignedIn ? "Buy" : "Get Started"}`}{" "}
                   </Button>
@@ -77,7 +77,7 @@ export default function Nav() {
         )}
         <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
           <div className="bg-gradient-to-b from-primary-red to-primary-blue !p-[0.13em] flex justify-center items-center rounded-lg">
-            <Button className="text-foreground bg-background hover:bg-background w-full h-max">
+            <Button className="text-foreground bg-background hover:bg-background/0 w-full h-max">
               {" "}
               {`${isSignedIn ? "Buy" : "Get Started"}`}{" "}
             </Button>

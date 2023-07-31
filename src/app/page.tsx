@@ -58,9 +58,9 @@ export default function Home() {
   }
   return (
     <div
-      className={`flex flex-col justify-center items-center w-screen flex-1 p-2  bg-gradient-to-br from-primary-blue to-primary-red ${systemTheme === "dark" ? "via-background" : ""} text-white`}
+      className={`flex flex-col justify-center items-center w-screen flex-1 p-2  bg-background text-white`}
     >
-      <div className="flex justify-center items-center gap-4 p-2 w-screen flex-1 flex-col bg-westlake bg-no-repeat bg-center bg-contain">
+      <div className="flex justify-center items-center gap-4 p-2 w-screen flex-1 flex-col bg-westlake bg-no-repeat bg-center bg-cover">
         <div className={`flex flex-col justify-center items-center gap-4 p-2 w-screen flex-1`}>
           <div className="flex flex-col justify-center items-center gap-4 p-2 w-full md:w-3/4 lg:w-1/2 xl:w-1/3 flex-1">
             <h1 className="text-center text-5xl md:text-6xl lg:text-7xl font-bold">
@@ -81,7 +81,7 @@ export default function Home() {
               <Link href="/about">
                 <Button
                   variant="outline"
-                  className="bg-transparent border-white border-2 w-[200px]"
+                  className="bg-transparent border-white border-2 w-[200px] hover:bg-white hover:text-black"
                 >
                   About
                 </Button>
