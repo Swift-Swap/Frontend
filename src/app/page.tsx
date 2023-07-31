@@ -58,7 +58,7 @@ export default function Home() {
   }
   return (
     <div
-      className={`flex flex-col justify-center items-center w-screen flex-1 p-2  bg-gradient-to-br from-primary-red to-primary-blue ${systemTheme === "dark" ? "via-background" : ""}`}
+      className={`flex flex-col justify-center items-center w-screen flex-1 p-2  bg-gradient-to-br from-primary-blue to-primary-red ${systemTheme === "dark" ? "via-background" : ""}`}
     >
       <div className="flex justify-center items-center gap-4 p-2 w-screen flex-1 flex-col bg-westlake bg-no-repeat bg-center bg-contain">
         <div className={`flex flex-col justify-center items-center gap-4 p-2 w-screen flex-1`}>
