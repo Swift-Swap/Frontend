@@ -1,3 +1,4 @@
+"use client"
 import { formatNumber, metrics, mockListings, stats } from "@/lib/utils";
 import React from "react";
 import { outfit } from "@/lib/utils";
