@@ -41,7 +41,6 @@ export async function PUT(req: NextRequest) {
   const {userId} = auth();
   const {searchParams} = new URL(req.url);
   const param = searchParams.get("listing_id");
-  console.log(param);
   const res = await fetch(
       `https://4uinr4ae3cg3wigkjjl4zqihsu0ggtgw.lambda-url.us-east-2.on.aws/api/v1/edit/${param}?owner_id=${userId}`,
     {
@@ -56,4 +55,19 @@ export async function PUT(req: NextRequest) {
   );
   const jsonRes = await res.json();
   return NextResponse.json(jsonRes, { status: res.status });
+}
+
+export async function DELETE(req: NextRequest) {
+  const {searchParams} = new URL(req.url);
+  const param = searchParams.get("listing_id");
+  const res = await fetch(
+      `https://spallk23ymaljjgfqmbs5wnsxe0tsicq.lambda-url.us-east-2.on.aws/api/v1/delete/listing/${param}`,
+    {
+      method: "DELETE",
+      headers: {
+        "X-API-KEY": process.env.API_KEY!,
+      },
+    },
+  );
+  return NextResponse.json({}, { status: res.status });
 }

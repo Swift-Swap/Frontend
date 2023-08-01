@@ -19,7 +19,7 @@ import {
 
 import { format } from "date-fns";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { ChevronsRight } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { PermDenied } from "@/components/perm_denied";
 import { Input } from "@/components/ui/input";
@@ -44,6 +44,7 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import { redirect } from "next/navigation";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 async function getListings(): Promise<ListingResponse[]> {
     const res = await fetch("/api/listing", { method: "GET" });
@@ -52,7 +53,7 @@ async function getListings(): Promise<ListingResponse[]> {
 }
 
 function convertToPrice(from: Date, to: Date): number {
-    const days = differenceInDays(to, from);
+    const days = differenceInDays(to, addDays(from, 1));
     if (days <= 0) return 0;
     if (days === 5) return 20;
     const res = 3.625 * days + 1.375;
@@ -125,17 +126,16 @@ export default function Home() {
                     return l.user_id === user.id;
                 }
             }
-            if (l.user_id === user!.id) return false;
+            if (user && l.user_id === user.id) return false;
             if (all) return true;
             return (
                 currLots.includes(l.lot.toLowerCase()) &&
                 format(fromDate!, "yyyy-MM-dd") === l.start_date &&
                 format(toDate!, "yyyy-MM-dd") === l.end_date &&
-                l.user_id != user!.id
+                (user ? l.user_id != user.id : true)
             );
         })
         .map((listing) => {
-
             const start_date_split = listing.start_date.split("-");
             const end_date_split = listing.end_date.split("-");
             const start_date = new Date(
@@ -150,7 +150,7 @@ export default function Home() {
             );
             return (
                 <Card
-                    className={`h-fit w-fit flex flex-col items-center text-center`}
+                    className={`${isOnSpot? "justify-center h-[300px] w-[300px]" : "h-fit w-fit"} flex flex-col items-center text-center`}
                     key={listing.spaceid}
                 >
                     <CardHeader>
@@ -168,6 +168,7 @@ export default function Home() {
                             {listing.lot}{" "}
                         </CardDescription>
                         {isOnSpot && <EditSheet setListings={setListings} lot={listing.spotnumber} fromDate={start_date} toDate={end_date} lotName={listing.lot} listing_id={listing.spaceid} />}
+                        {isOnSpot && <Delete listing_id={listing.spaceid} setListings={setListings}/>}
                         {!isOnSpot && <Button className="text-sm"> Buy </Button>}
                     </CardHeader>
                 </Card>
@@ -179,7 +180,7 @@ export default function Home() {
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button variant="outline">
-                            <Menu />
+                            <ChevronsRight />
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="flex">
@@ -245,8 +246,22 @@ export default function Home() {
                 </div>
             </div>
             <div className={`grid w-full h-fit place-items-center`}>
-                <div className={`grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 p-12 ${isOnSpot ? "!grid-cols-1" : ""}`}>
+                <div className={`grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-8 p-12 ${isOnSpot ? "!grid-cols-1" : ""}`}>
                     {listingsMap}
+                    {listingsMap.length === 0 && (
+                        !isOnSpot ? (
+                            <div className="flex flex-col items-center justify-center">
+                                <h1 className="text-3xl"> No Listings Found </h1>
+                                <h2 className="text-xl"> Try changing your search options </h2>
+                            </div>
+                        ) :
+                        (
+                            <div className="flex flex-col items-center justify-center">
+                                <h1 className="text-3xl"> You have no spots</h1>
+                                <h2 className="text-xl"> Try adding one </h2>
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
         </div>
@@ -274,7 +289,7 @@ function MobileOpts(props: MobileOptsProps) {
             <div className="w-3/4">
                 {/* Sidebar content */}
                 <h2 className="mb-4"> Parking Lot </h2>
-                <div className="grid grid-cols-2 gap-4 mb-12">
+                <div className="grid grid-cols-1 gap-4 mb-12">
                     {props.lotsMapped}
                 </div>
                 <div className="flex flex-col gap-4 mb-4">
@@ -301,7 +316,7 @@ function MobileOpts(props: MobileOptsProps) {
                         }}
                     >
                         {" "}
-                        Your Spot{" "}
+                        Your Spots{" "}
                     </Button>
                     <Button
                         variant={`${props.all ? "default" : "secondary"}`}
@@ -348,7 +363,7 @@ function AddSheet(props: AddSheetProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="default">Sell</Button>
+                <Button variant="outline">Sell</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -502,6 +517,7 @@ interface EditSheetProps {
     listing_id: string;
     setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
 }
+
 function EditSheet(props: EditSheetProps) {
     const [from, setFrom] = React.useState<Date | undefined>(props.fromDate);
     const [to, setTo] = React.useState<Date | undefined>(props.toDate);
@@ -512,7 +528,7 @@ function EditSheet(props: EditSheetProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="default">Edit</Button>
+                <Button variant="default" className="!mb-4">Edit</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -628,4 +644,60 @@ function EditSheet(props: EditSheetProps) {
             </DialogContent>
         </Dialog>
     );
+}
+
+interface DeleteSheetProps {
+    setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
+    listing_id: string;
+}
+
+function Delete(props: DeleteSheetProps) {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="outline">Delete</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            space.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={async () => {
+            toast({
+              title: "Deleting space...",
+            })
+            const res = await fetch(`/api/listing?listing_id=${props.listing_id}`, {
+              method: "DELETE",
+            });
+            props.setListings(await getListings());
+            if (res.status === 200) {
+              toast({
+                title: "Space deleted",
+              });
+            } else if (res.status === 401) {
+              redirect("/sign-in");
+            } else {
+              toast({
+                title: `${res.status === 500
+                  ? "Internal server error"
+                  : "Unknown error"
+                }`,
+                description: `please contact support`,
+                variant: "destructive",
+              });
+            }
+            toast({
+                title: "Space deleted",
+            });
+            return; 
+          }}>Delete</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
 }
