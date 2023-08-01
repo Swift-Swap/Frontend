@@ -163,7 +163,7 @@ export default function Home() {
                             {" "}
                             {listing.lot}{" "}
                         </CardDescription>
-                        {isOnSpot && <EditSheet setListings={setListings} lot={listing.spotnumber} fromDate={start_date} toDate={end_date} lotName={listing.lot} listing_id={listing.spaceid}/>}
+                        {isOnSpot && <EditSheet setListings={setListings} lot={listing.spotnumber} fromDate={start_date} toDate={end_date} lotName={listing.lot} listing_id={listing.spaceid} />}
                         {!isOnSpot && <Button className="text-sm"> Buy </Button>}
                     </CardHeader>
                 </Card>
@@ -178,7 +178,7 @@ export default function Home() {
                             <Menu />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left">
+                    <SheetContent side="left" className="flex">
                         <MobileOpts
                             setListings={setListings}
                             setCurrFrom={setFromDate}
@@ -190,6 +190,8 @@ export default function Home() {
                             lotsMapped={lotsMapped}
                             onFromDateChange={onFromDateChange}
                             onToDateChange={onToDateChange}
+                            isOnSpot={isOnSpot}
+                            setIsOnSpot={setIsOnSpot}
                         />
                     </SheetContent>
                 </Sheet>
@@ -234,12 +236,12 @@ export default function Home() {
                             {" "}
                             All{" "}
                         </Button>
-                        <AddSheet setListings={setListings}/>
+                        <AddSheet setListings={setListings} />
                     </div>
                 </div>
             </div>
-            <div className={`grid w-full h-fit place-items-center ${isOnSpot ? "!h-screen" : ""}`}>
-                <div className={`grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-8 p-12 ${isOnSpot ? "!grid-cols-1" : ""}`}>
+            <div className={`grid w-full h-fit place-items-center`}>
+                <div className={`grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 p-12 ${isOnSpot ? "!grid-cols-1" : ""}`}>
                     {listingsMap}
                 </div>
             </div>
@@ -258,15 +260,17 @@ interface MobileOptsProps {
     setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
     onFromDateChange: (date: Date) => void;
     onToDateChange: (date: Date) => void;
+    isOnSpot: boolean;
+    setIsOnSpot: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function MobileOpts(props: MobileOptsProps) {
     return (
-        <div className={`px-6 py-20 w-full h-screen sticky top-0`}>
+        <div className={`py-4 w-full h-screen`}>
             <div className="w-3/4">
                 {/* Sidebar content */}
-                <div className="flex flex-col gap-4 mb-24">
-                    <h2> Parking Lot </h2>
+                <h2 className="mb-4"> Parking Lot </h2>
+                <div className="grid grid-cols-2 gap-4 mb-12">
                     {props.lotsMapped}
                 </div>
                 <div className="flex flex-col gap-4 mb-4">
@@ -286,8 +290,17 @@ function MobileOpts(props: MobileOptsProps) {
                 </div>
                 <div className="flex flex-col gap-4 mb-4">
                     <Button
+                        variant={`${props.isOnSpot ? "default" : "secondary"}`}
+                        className="mt-5"
+                        onClick={() => {
+                            props.setIsOnSpot(!props.isOnSpot);
+                        }}
+                    >
+                        {" "}
+                        Your Spot{" "}
+                    </Button>
+                    <Button
                         variant={`${props.all ? "default" : "secondary"}`}
-                        className={`mt-16`}
                         onClick={() => {
                             props.setAll(!props.all);
                         }}
@@ -295,7 +308,7 @@ function MobileOpts(props: MobileOptsProps) {
                         {" "}
                         All{" "}
                     </Button>
-                    <AddSheet setListings={props.setListings}/>
+                    <AddSheet setListings={props.setListings} />
                 </div>
             </div>
         </div>
@@ -427,6 +440,9 @@ function AddSheet(props: AddSheetProps) {
                                 });
                                 return;
                             }
+                            toast({
+                                title: "Adding space...",
+                            })
                             const new_from = format(from!, "yyyy-MM-dd");
                             const new_to = format(to!, "yyyy-MM-dd");
                             const body: CreateListing = {
@@ -466,7 +482,7 @@ function AddSheet(props: AddSheetProps) {
                             return;
                         }}
                     >
-                        Add
+                    Add
                     </Button>
                 </DialogFooter>
             </DialogContent>
@@ -561,6 +577,9 @@ function EditSheet(props: EditSheetProps) {
                     <Button
                         type="button"
                         onClick={async () => {
+                            toast({
+                                title: "Editing space...",
+                            })
                             if (to! < from!) {
                                 toast({
                                     title: "Invalid date range",

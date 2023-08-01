@@ -71,7 +71,7 @@ export default function Home() {
             </p>
             <div className="flex justify-center items-between gap-4 p-2 w-full">
               <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
-                <Button className="flex items-center gap-2 w-[200px]">
+                <Button className="flex items-center gap-2 w-[150px] md:w-[200px]">
                   {isSignedIn ? "Buy" : "Get Started"}
                   <ArrowRight height={24} />
                 </Button>
@@ -79,7 +79,7 @@ export default function Home() {
               <Link href="/about">
                 <Button
                   variant="outline"
-                  className="bg-transparent border-white border-2 w-[200px] hover:bg-white hover:text-black"
+                  className="bg-transparent border-white border-2 w-[150px] md:w-[200px] hover:bg-white hover:text-black"
                 >
                   About
                 </Button>

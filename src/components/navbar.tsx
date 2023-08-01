@@ -38,22 +38,22 @@ export default function Nav() {
               <Menu />
             </Button>
           </SheetTrigger>
-          <SheetContent side="top">
-            <div className="px-4 justify-around flex w-full">
+          <SheetContent side="right">
+            <div className="py-4 gap-4 flex flex-col w-full">
               <Link href="/about">
-                <Button variant="ghost">About</Button>
+                <Button className="w-full flex justify-start" variant="ghost">About</Button>
               </Link>
               <Link href="/contact">
-                <Button variant="ghost">Contact</Button>
+                <Button className="w-full flex justify-start" variant="ghost">Contact</Button>
               </Link>
               {!isSignedIn && (
                 <Link href="/sign-in">
-                  <Button variant="ghost">Sign In</Button>
+                  <Button variant="ghost" className="w-full flex justify-start">Sign In</Button>
                 </Link>
               )}
               <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
                 <div className="bg-gradient-to-b from-primary-red to-primary-blue !p-[0.13em] flex justify-center items-center rounded-lg">
-                  <Button className="text-foreground bg-background hover:bg-background/0 hover:text-white w-full h-max">
+                  <Button className="text-foreground bg-background hover:bg-background/0 hover:text-white w-full h-max justify-start">
                     {" "}
                     {`${isSignedIn ? "Buy" : "Get Started"}`}{" "}
                   </Button>
