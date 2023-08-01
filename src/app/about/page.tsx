@@ -1,16 +1,16 @@
 "use client";
 
-import { useTheme } from "next-themes";
+import { outfit } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function About() {
   return (
     <div
-      className={`w-full flex-1 flex flex-col items-center py-12 text-center bg-blur bg-cover bg-no-repeat bg-center`}
+      className={`w-full flex-1 flex flex-col items-center py-12 text-center bg-blur bg-cover bg-no-repeat bg-center ${outfit.className}`}
     >
       <div className="lg:w-1/3 md:w-1/2 w-4/5 flex-1 flex flex-col items-center text-center">
-        <h1 className="text-4xl font-bold">About</h1>
+        <h1 className={`text-4xl font-bold `}>About</h1>
         <Image
           alt="Logo"
           width={200}

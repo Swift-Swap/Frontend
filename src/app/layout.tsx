@@ -5,9 +5,13 @@ import Nav from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Roboto } from "next/font/google"
+import { Roboto } from "next/font/google";
 
-const roboto = Roboto({display: "swap", weight: ["400", "500", "700"], subsets: ["latin"]})
+const roboto = Roboto({
+  display: "swap",
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+});
 export const metadata: Metadata = {
   title: "SwiftSwap",
   description: "SwiftSwap",

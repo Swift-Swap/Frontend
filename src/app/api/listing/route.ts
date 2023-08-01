@@ -38,16 +38,16 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   const json = await req.json();
-  const {userId} = auth();
-  const {searchParams} = new URL(req.url);
+  const { userId } = auth();
+  const { searchParams } = new URL(req.url);
   const param = searchParams.get("listing_id");
   const res = await fetch(
-      `https://4uinr4ae3cg3wigkjjl4zqihsu0ggtgw.lambda-url.us-east-2.on.aws/api/v1/edit/${param}?owner_id=${userId}`,
+    `https://4uinr4ae3cg3wigkjjl4zqihsu0ggtgw.lambda-url.us-east-2.on.aws/api/v1/edit/${param}?owner_id=${userId}`,
     {
       method: "PUT",
       body: JSON.stringify(json),
       headers: {
-        "accept": "application/json",
+        accept: "application/json",
         "Content-Type": "application/json",
         "X-API-KEY": process.env.API_KEY!,
       },
@@ -58,10 +58,10 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const {searchParams} = new URL(req.url);
+  const { searchParams } = new URL(req.url);
   const param = searchParams.get("listing_id");
   const res = await fetch(
-      `https://spallk23ymaljjgfqmbs5wnsxe0tsicq.lambda-url.us-east-2.on.aws/api/v1/delete/listing/${param}`,
+    `https://spallk23ymaljjgfqmbs5wnsxe0tsicq.lambda-url.us-east-2.on.aws/api/v1/delete/listing/${param}`,
     {
       method: "DELETE",
       headers: {

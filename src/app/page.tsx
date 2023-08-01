@@ -85,7 +85,7 @@ export default function Home() {
                   About
                 </Button>
               </Link>
-           </div>
+            </div>
           </div>
         </div>
       </div>
