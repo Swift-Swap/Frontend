@@ -3,12 +3,14 @@ import { DatePicker } from "@/components/ui/daterangepicker";
 import { addDays, differenceInDays, parse } from "date-fns";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
     TAcceptedLot,
     acceptedLots,
     CreateListing,
     ListingResponse,
     EditListing,
+    formatNumber,
 } from "@/lib/utils";
 import {
     Card,
@@ -53,7 +55,7 @@ async function getListings(): Promise<ListingResponse[]> {
 }
 
 function convertToPrice(from: Date, to: Date): number {
-    const days = differenceInDays(to, addDays(from, 1));
+    const days = differenceInDays(to, addDays(from, -1));
     if (days <= 0) return 0;
     if (days === 5) return 20;
     const res = 3.625 * days + 1.375;
@@ -150,7 +152,7 @@ export default function Home() {
             );
             return (
                 <Card
-                    className={`${isOnSpot? "justify-center h-[300px] w-[300px]" : "h-fit w-fit"} flex flex-col items-center text-center`}
+                    className={`${isOnSpot ? "justify-center h-[300px] w-[300px]" : "h-fit w-fit"} flex flex-col items-center text-center`}
                     key={listing.spaceid}
                 >
                     <CardHeader>
@@ -161,14 +163,14 @@ export default function Home() {
                         </CardTitle>
                         <CardDescription className="text-sm md:text-md">
                             {" "}
-                            #{listing.spotnumber}{" "}
+                            #{formatNumber(listing.spotnumber)}{" "}
                         </CardDescription>
                         <CardDescription className="text-sm md:text-md">
                             {" "}
                             {listing.lot}{" "}
                         </CardDescription>
                         {isOnSpot && <EditSheet setListings={setListings} lot={listing.spotnumber} fromDate={start_date} toDate={end_date} lotName={listing.lot} listing_id={listing.spaceid} />}
-                        {isOnSpot && <Delete listing_id={listing.spaceid} setListings={setListings}/>}
+                        {isOnSpot && <Delete listing_id={listing.spaceid} setListings={setListings} />}
                         {!isOnSpot && <Button className="text-sm"> Buy </Button>}
                     </CardHeader>
                 </Card>
@@ -230,7 +232,7 @@ export default function Home() {
                             }}
                         >
                             {" "}
-                            Your Spot{" "}
+                            Your Spots{" "}
                         </Button>
                         <Button
                             variant={`${all ? "default" : "secondary"}`}
@@ -255,12 +257,12 @@ export default function Home() {
                                 <h2 className="text-xl"> Try changing your search options </h2>
                             </div>
                         ) :
-                        (
-                            <div className="flex flex-col items-center justify-center">
-                                <h1 className="text-3xl"> You have no spots</h1>
-                                <h2 className="text-xl"> Try adding one </h2>
-                            </div>
-                        )
+                            (
+                                <div className="flex flex-col items-center justify-center">
+                                    <h1 className="text-3xl"> You have no spots</h1>
+                                    <h2 className="text-xl"> Try adding one </h2>
+                                </div>
+                            )
                     )}
                 </div>
             </div>
@@ -440,69 +442,77 @@ function AddSheet(props: AddSheetProps) {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button
-                        type="button"
-                        onClick={async () => {
-                            if (to! < from!) {
+                    <DialogPrimitive.Close>
+                        <Button
+                            type="button"
+                            onClick={async () => {
+                                if (to! < from!) {
+                                    toast({
+                                        title: "Invalid date range",
+                                        description: "The end date must be after the start date",
+                                        variant: "destructive",
+                                    });
+                                    return;
+                                }
+                                if (lot < 1) {
+                                    toast({
+                                        title: "Invalid lot",
+                                        description: "The lot number must be greater than 0",
+                                        variant: "destructive",
+                                    });
+                                    return;
+                                }
                                 toast({
-                                    title: "Invalid date range",
-                                    description: "The end date must be after the start date",
-                                    variant: "destructive",
+                                    title: "Adding space...",
+                                })
+                                const new_from = format(from!, "yyyy-MM-dd");
+                                const new_to = format(to!, "yyyy-MM-dd");
+                                const body: CreateListing = {
+                                    spotnumber: lot,
+                                    lot: lotName,
+                                    fromdate: new_from,
+                                    todate: new_to,
+                                };
+                                const res = await fetch("/api/listing", {
+                                    method: "POST",
+                                    body: JSON.stringify(body),
                                 });
+                                const json = await res.json();
+                                if (res.status === 201) {
+                                    toast({
+                                        title: "Space added",
+                                    });
+                                } else if (res.status === 401) {
+                                    redirect("/sign-in");
+                                } else if (res.status === 409) {
+                                    toast({
+                                        title: "You already have a space",
+                                        description: "You can only have one space at a time",
+                                        variant: "destructive",
+                                    });
+                                } else if (res.status === 400) {
+                                    toast({
+                                        title: "Invalid date range",
+                                        description: "Your spot time range overlaps with an existing spot",
+                                        variant: "destructive",
+                                    });
+                                } else {
+                                    toast({
+                                        title: `${res.status === 500
+                                            ? "Internal server error"
+                                            : "Unknown error"
+                                            }`,
+                                        description: `${json.message}, please contact support (support@swiftswap.net)`,
+                                        variant: "destructive",
+                                    });
+                                }
+                                props.setListings(await getListings());
                                 return;
-                            }
-                            if (lot < 1) {
-                                toast({
-                                    title: "Invalid lot",
-                                    description: "The lot number must be greater than 0",
-                                    variant: "destructive",
-                                });
-                                return;
-                            }
-                            toast({
-                                title: "Adding space...",
-                            })
-                            const new_from = format(from!, "yyyy-MM-dd");
-                            const new_to = format(to!, "yyyy-MM-dd");
-                            const body: CreateListing = {
-                                spotnumber: lot,
-                                lot: lotName,
-                                fromdate: new_from,
-                                todate: new_to,
-                            };
-                            const res = await fetch("/api/listing", {
-                                method: "POST",
-                                body: JSON.stringify(body),
-                            });
-                            const json = await res.json();
-                            if (res.status === 201) {
-                                toast({
-                                    title: "Space added",
-                                });
-                            } else if (res.status === 401) {
-                                redirect("/sign-in");
-                            } else if (res.status === 409) {
-                                toast({
-                                    title: "You already have a space",
-                                    description: "You can only have one space at a time",
-                                    variant: "destructive",
-                                });
-                            } else {
-                                toast({
-                                    title: `${res.status === 500
-                                        ? "Internal server error"
-                                        : "Unknown error"
-                                        }`,
-                                    description: `${json.message}, please contact support`,
-                                    variant: "destructive",
-                                });
-                            }
-                            props.setListings(await getListings());
-                            return;
-                        }}
-                    >
-                        Add
-                    </Button>
+                            }}
+                        >
+                            Add
+                        </Button>
+                    </DialogPrimitive.Close>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -594,52 +604,54 @@ function EditSheet(props: EditSheetProps) {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button
-                        type="button"
-                        onClick={async () => {
-                            toast({
-                                title: "Editing space...",
-                            })
-                            if (to! < from!) {
+                    <DialogPrimitive.Close>
+                        <Button
+                            type="button"
+                            onClick={async () => {
                                 toast({
-                                    title: "Invalid date range",
-                                    description: "The end date must be after the start date",
-                                    variant: "destructive",
+                                    title: "Editing space...",
+                                })
+                                if (to! < from!) {
+                                    toast({
+                                        title: "Invalid date range",
+                                        description: "The end date must be after the start date",
+                                        variant: "destructive",
+                                    });
+                                    return;
+                                }
+                                const new_from = format(from!, "yyyy-MM-dd");
+                                const new_to = format(to!, "yyyy-MM-dd");
+                                const body: EditListing = {
+                                    fromdate: new_from,
+                                    todate: new_to,
+                                };
+                                const res = await fetch(`/api/listing?listing_id=${props.listing_id}`, {
+                                    method: "PUT",
+                                    body: JSON.stringify(body),
                                 });
+                                props.setListings(await getListings());
+                                if (res.status === 200) {
+                                    toast({
+                                        title: "Space edited",
+                                    });
+                                } else if (res.status === 401) {
+                                    redirect("/sign-in");
+                                } else {
+                                    toast({
+                                        title: `${res.status === 500
+                                            ? "Internal server error"
+                                            : "Unknown error"
+                                            }`,
+                                        description: `please contact support (support@swiftswap.net)`,
+                                        variant: "destructive",
+                                    });
+                                }
                                 return;
-                            }
-                            const new_from = format(from!, "yyyy-MM-dd");
-                            const new_to = format(to!, "yyyy-MM-dd");
-                            const body: EditListing = {
-                                fromdate: new_from,
-                                todate: new_to,
-                            };
-                            const res = await fetch(`/api/listing?listing_id=${props.listing_id}`, {
-                                method: "PUT",
-                                body: JSON.stringify(body),
-                            });
-                            props.setListings(await getListings());
-                            if (res.status === 200) {
-                                toast({
-                                    title: "Space edited",
-                                });
-                            } else if (res.status === 401) {
-                                redirect("/sign-in");
-                            } else {
-                                toast({
-                                    title: `${res.status === 500
-                                        ? "Internal server error"
-                                        : "Unknown error"
-                                        }`,
-                                    description: `please contact support`,
-                                    variant: "destructive",
-                                });
-                            }
-                            return;
-                        }}
-                    >
-                        Edit
-                    </Button>
+                            }}
+                        >
+                            Edit
+                        </Button>
+                    </DialogPrimitive.Close>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -652,52 +664,52 @@ interface DeleteSheetProps {
 }
 
 function Delete(props: DeleteSheetProps) {
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Delete</Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            space.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={async () => {
-            toast({
-              title: "Deleting space...",
-            })
-            const res = await fetch(`/api/listing?listing_id=${props.listing_id}`, {
-              method: "DELETE",
-            });
-            props.setListings(await getListings());
-            if (res.status === 200) {
-              toast({
-                title: "Space deleted",
-              });
-            } else if (res.status === 401) {
-              redirect("/sign-in");
-            } else {
-              toast({
-                title: `${res.status === 500
-                  ? "Internal server error"
-                  : "Unknown error"
-                }`,
-                description: `please contact support`,
-                variant: "destructive",
-              });
-            }
-            toast({
-                title: "Space deleted",
-            });
-            return; 
-          }}>Delete</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  )
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button variant="outline">Delete</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your
+                        space.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={async () => {
+                        toast({
+                            title: "Deleting space...",
+                        })
+                        const res = await fetch(`/api/listing?listing_id=${props.listing_id}`, {
+                            method: "DELETE",
+                        });
+                        props.setListings(await getListings());
+                        if (res.status === 200) {
+                            toast({
+                                title: "Space deleted",
+                            });
+                        } else if (res.status === 401) {
+                            redirect("/sign-in");
+                        } else {
+                            toast({
+                                title: `${res.status === 500
+                                    ? "Internal server error"
+                                    : "Unknown error"
+                                    }`,
+                                description: `please contact support (support@swiftswap.net)`,
+                                variant: "destructive",
+                            });
+                        }
+                        toast({
+                            title: "Space deleted",
+                        });
+                        return;
+                    }}>Delete</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    )
 }

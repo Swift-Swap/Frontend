@@ -10,15 +10,14 @@ import { UserButton } from "@clerk/nextjs";
 import { useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
+import { outfit } from "@/lib/utils";
 export default function Nav() {
-    const pathname = usePathname();
-    const { isLoaded, isSignedIn, user } = useUser();
+    const { isLoaded, isSignedIn } = useUser();
     const { systemTheme } = useTheme();
     if (!isLoaded) return null;
     return (
         <nav
-            className={`p-4 border-b-2 border-b-foreground-50 flex gap-24 w-full justify-between bg-background items-center px-2 md:px-8`}
+            className={`p-4 border-b-2 border-b-foreground-50 flex gap-24 w-full justify-between bg-background items-center px-2 md:px-8 ${outfit.className}`}
         >
             <Link href="/" className="flex items-center gap-4">
                 <Image
@@ -49,6 +48,11 @@ export default function Nav() {
                             {!isSignedIn && (
                                 <Link href="/sign-in">
                                     <Button variant="ghost" className="w-full flex justify-start">Sign In</Button>
+                                </Link>
+                            )}
+                            {isSignedIn && (
+                                <Link href="/dashboard">
+                                    <Button variant="ghost" className="w-full flex justify-start">Dashboard</Button>
                                 </Link>
                             )}
                             <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
@@ -93,6 +97,11 @@ export default function Nav() {
                 {!isSignedIn && (
                     <Link href="/sign-in">
                         <Button variant="ghost">Sign In</Button>
+                    </Link>
+                )}
+                {isSignedIn && (
+                    <Link href="/dashboard">
+                        <Button variant="ghost" className="w-full flex justify-start">Dashboard</Button>
                     </Link>
                 )}
                 <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>

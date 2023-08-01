@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { PermDenied } from "@/components/perm_denied";
+import { outfit } from "@/lib/utils";
+
 export default function Home() {
   const { toast } = useToast();
   const [showed, setShowed] = React.useState(false);
   const { isLoaded, isSignedIn, user } = useUser();
-
   React.useState(() => {
     if (typeof localStorage === "undefined") return;
     const isShowed = localStorage.getItem("showed-unfinished-website");
@@ -54,7 +55,7 @@ export default function Home() {
   }
   return (
     <div
-      className={`flex flex-col justify-center items-center w-screen flex-1 p-2  text-white bg-westlake bg-no-repeat bg-center bg-cover`}
+      className={`flex flex-col justify-center items-center w-screen flex-1 p-2  text-white bg-westlake bg-no-repeat bg-center bg-cover ${outfit.className}`}
     >
       <div className="flex justify-center items-center gap-4 p-2 w-screen flex-1 flex-col ">
         <div
