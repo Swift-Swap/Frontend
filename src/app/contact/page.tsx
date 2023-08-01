@@ -12,7 +12,7 @@ export default function Contact() {
     const [name, setName] = React.useState("");
     const [message, setMessage] = React.useState("");
     return (
-        <div className="flex-1 flex w-screen flex-col items-center py-24">
+        <div className="flex-1 flex w-screen flex-col items-center py-24 bg-blur bg-cover bg-no-repeat bg-center">
             <h1 className={`mb-4 text-5xl lg:text-6xl xl:text-7xl font-bold ${outfit.className}`}> Contact SwiftSwap </h1>
             <p className="mb-14"> Need to get in touch? Just fill out the form below and we’ll be right with you! </p>
             <div className="w-full px-8 md:w-2/3 lg:w-1/2 xl:w-1/3">
@@ -32,8 +32,8 @@ export default function Contact() {
                 </div>
                 <Textarea onChange={(e) => {
                     setMessage(e.target.value);
-                }} value={message} className="mt-4" placeholder="Help I can't do so and so" />
-                <Button variant="outline" className="mt-8 w-full"> Submit </Button>
+                }} value={message} className="mt-4 h-[400px]" placeholder="Help I can't do so and so" />
+                <Button variant="outline" className="mt-8 w-full py-8 border-[#283794]"> Submit </Button>
             </div>
         </div>
     )
