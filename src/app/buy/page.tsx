@@ -120,7 +120,11 @@ export default function Home() {
     });
     const listingsMap = listings
         .filter((l) => {
-            if (isOnSpot) return l.user_id === user!.id;
+            if (isOnSpot) {
+                if (user) {
+                    return l.user_id === user.id;
+                }
+            }
             if (l.user_id === user!.id) return false;
             if (all) return true;
             return (
@@ -482,7 +486,7 @@ function AddSheet(props: AddSheetProps) {
                             return;
                         }}
                     >
-                    Add
+                        Add
                     </Button>
                 </DialogFooter>
             </DialogContent>
