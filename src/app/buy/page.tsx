@@ -356,7 +356,7 @@ function AddSheet(props: AddSheetProps) {
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="lot" className="text-right">
-                            Lot
+                            Space
                         </Label>
                         <Input
                             id="lot"
@@ -520,7 +520,7 @@ function EditSheet(props: EditSheetProps) {
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="lot" className="text-right">
-                            Lot
+                            Space
                         </Label>
                         <Input
                             readOnly
