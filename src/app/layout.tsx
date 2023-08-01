@@ -1,12 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import { Providers } from "./providers";
 import Nav from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "SwiftSwap",
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
+        <body className={outfit.className}>
           <Providers>
             <main className="w-screen h-screen bg-background max-w-full overflow-x-hidden flex flex-col">
               <Nav />
