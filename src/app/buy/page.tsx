@@ -11,6 +11,7 @@ import {
     ListingResponse,
     EditListing,
     formatNumber,
+    getListings,
 } from "@/lib/utils";
 import {
     Card,
@@ -48,12 +49,6 @@ import {
 import { redirect } from "next/navigation";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
-async function getListings(): Promise<ListingResponse[]> {
-    const res = await fetch("/api/listing", { method: "GET" });
-    const json = (await res.json()) as ListingResponse[];
-    return json;
-}
-
 function convertToPrice(from: Date, to: Date): number {
     const days = differenceInDays(to, addDays(from, -1));
     if (days <= 0) return 0;
@@ -65,6 +60,12 @@ function convertToPrice(from: Date, to: Date): number {
 export default function Home() {
     const [fromDate, setFromDate] = React.useState<Date | undefined>(undefined);
     const [listings, setListings] = React.useState<ListingResponse[] | null>([]);
+    const [toDate, setToDate] = React.useState<Date | undefined>(undefined);
+    const [currLots, setCurrLots] = React.useState<string[]>([]);
+    const [all, setAll] = React.useState<boolean>(true);
+    const [isOnSpot, setIsOnSpot] = React.useState<boolean>(false);
+    const { isLoaded, isSignedIn, user } = useUser();
+
     function onFromDateChange(date: Date) {
         setFromDate(date);
         setAll(false);
@@ -77,11 +78,7 @@ export default function Home() {
         if (typeof localStorage === "undefined") return;
         localStorage.setItem("toDate", date.toDateString());
     }
-    const [toDate, setToDate] = React.useState<Date | undefined>(undefined);
-    const [currLots, setCurrLots] = React.useState<string[]>([]);
-    const [all, setAll] = React.useState<boolean>(true);
-    const [isOnSpot, setIsOnSpot] = React.useState<boolean>(false);
-    const { isLoaded, isSignedIn, user } = useUser();
+
     React.useEffect(() => {
         if (typeof localStorage === "undefined") return;
         const toDate = localStorage.getItem("toDate");
@@ -94,6 +91,7 @@ export default function Home() {
         }
         main();
     }, []);
+
     if (!listings) return null;
     if (!isLoaded) return null;
     if (
@@ -103,6 +101,7 @@ export default function Home() {
         return <PermDenied emailAddr={user?.primaryEmailAddress?.emailAddress!} />;
     }
     if (!isSignedIn) redirect("/sign-in");
+
     const lotsMapped = acceptedLots.map((lot) => {
         return (
             <Button

@@ -4,6 +4,12 @@ import { Outfit } from "next/font/google";
 
 export const outfit = Outfit({display: "swap", subsets: ["latin"]})
 
+export async function getListings(): Promise<ListingResponse[]> {
+    const res = await fetch("/api/listing", { method: "GET" });
+    const json = (await res.json()) as ListingResponse[];
+    return json;
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

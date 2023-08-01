@@ -36,6 +36,7 @@
     --radius: 0.5rem;
     --primary-blue: 232 57% 37%;
     --primary-red: 358 85% 52%;
+    --dark-background: 222.2 84% 4.9%;
   }
 
   [data-theme="dark"] {
