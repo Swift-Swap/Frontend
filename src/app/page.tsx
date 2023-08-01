@@ -17,7 +17,6 @@ export default function Home() {
     const isShowed = localStorage.getItem("showed-unfinished-website");
     if (isShowed) {
       if (JSON.parse(isShowed)) {
-        console.log(isShowed);
         setShowed(true);
         return;
       }

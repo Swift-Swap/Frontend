@@ -7,6 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 export const acceptedLots = ["WAC", "PAC", "Tennis Courts", "Stadium"] as const;
 export type TAcceptedLot = (typeof acceptedLots)[number];
 
+export interface EditListing {
+  fromdate: string;
+  todate: string;
+}
 export interface CreateListing {
   spotnumber: number;
   lot: TAcceptedLot;

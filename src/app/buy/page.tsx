@@ -8,6 +8,7 @@ import {
     acceptedLots,
     CreateListing,
     ListingResponse,
+    EditListing,
 } from "@/lib/utils";
 import {
     Card,
@@ -51,10 +52,8 @@ async function getListings(): Promise<ListingResponse[]> {
 }
 
 function convertToPrice(from: Date, to: Date): number {
-    console.log(from, to);
     const days = differenceInDays(to, from);
-    console.log(days, from, to);
-    if (days === 0) return 0;
+    if (days <= 0) return 0;
     if (days === 5) return 20;
     const res = 3.625 * days + 1.375;
     return res;
@@ -78,12 +77,13 @@ export default function Home() {
     const [toDate, setToDate] = React.useState<Date | undefined>(undefined);
     const [currLots, setCurrLots] = React.useState<string[]>([]);
     const [all, setAll] = React.useState<boolean>(true);
+    const [isOnSpot, setIsOnSpot] = React.useState<boolean>(false);
     const { isLoaded, isSignedIn, user } = useUser();
     React.useEffect(() => {
         if (typeof localStorage === "undefined") return;
         const toDate = localStorage.getItem("toDate");
         const fromDate = localStorage.getItem("fromDate");
-        toDate ? setToDate(new Date(toDate)) : setToDate(addDays(new Date(), 2));
+        toDate ? setToDate(new Date(toDate)) : setToDate(addDays(new Date(), 1));
         fromDate ? setFromDate(new Date(fromDate)) : setFromDate(new Date());
         async function main() {
             const res = await getListings();
@@ -102,7 +102,7 @@ export default function Home() {
     const lotsMapped = acceptedLots.map((lot) => {
         return (
             <Button
-                variant={`${currLots.includes(lot.toLowerCase()) && !all ? "default" : "secondary"
+                variant={`${currLots.includes(lot.toLowerCase()) && !all && !isOnSpot ? "default" : "secondary"
                     }`}
                 key={lot}
                 onClick={() => {
@@ -120,28 +120,40 @@ export default function Home() {
     });
     const listingsMap = listings
         .filter((l) => {
+            if (isOnSpot) return l.user_id === user!.id;
             if (l.user_id === user!.id) return false;
-            const new_start = parse(l.start_date, "yyyy-MM-dd", new Date());
-            const new_end = parse(l.end_date, "yyyy-MM-dd", new Date());
             if (all) return true;
             return (
                 currLots.includes(l.lot.toLowerCase()) &&
-                fromDate?.toDateString() === new_start.toDateString() &&
-                toDate?.toDateString() === new_end.toDateString()
-                && l.user_id != user!.id
+                format(fromDate!, "yyyy-MM-dd") === l.start_date &&
+                format(toDate!, "yyyy-MM-dd") === l.end_date &&
+                l.user_id != user!.id
             );
         })
         .map((listing) => {
+
+            const start_date_split = listing.start_date.split("-");
+            const end_date_split = listing.end_date.split("-");
+            const start_date = new Date(
+                parseInt(start_date_split[0]),
+                parseInt(start_date_split[1]) - 1,
+                parseInt(start_date_split[2])
+            );
+            const end_date = new Date(
+                parseInt(end_date_split[0]),
+                parseInt(end_date_split[1]) - 1,
+                parseInt(end_date_split[2])
+            );
             return (
                 <Card
-                    className="h-fit w-fit flex flex-col items-center text-center"
+                    className={`h-fit w-fit flex flex-col items-center text-center`}
                     key={listing.spaceid}
                 >
                     <CardHeader>
                         <CardTitle className="text-md md:text-xl">
                             {" "}
-                            {format(new Date(listing.start_date), "LLL dd")} -{" "}
-                            {format(new Date(listing.end_date), "LLL dd")}{" "}
+                            {format(start_date, "LLL dd")} -{" "}
+                            {format(end_date, "LLL dd")}{" "}
                         </CardTitle>
                         <CardDescription className="text-sm md:text-md">
                             {" "}
@@ -151,7 +163,8 @@ export default function Home() {
                             {" "}
                             {listing.lot}{" "}
                         </CardDescription>
-                        <Button className="text-sm"> Buy </Button>
+                        {isOnSpot && <EditSheet setListings={setListings} lot={listing.spotnumber} fromDate={start_date} toDate={end_date} lotName={listing.lot} listing_id={listing.spaceid}/>}
+                        {!isOnSpot && <Button className="text-sm"> Buy </Button>}
                     </CardHeader>
                 </Card>
             );
@@ -167,6 +180,7 @@ export default function Home() {
                     </SheetTrigger>
                     <SheetContent side="left">
                         <MobileOpts
+                            setListings={setListings}
                             setCurrFrom={setFromDate}
                             setCurrTo={setToDate}
                             currFrom={fromDate}
@@ -180,7 +194,6 @@ export default function Home() {
                     </SheetContent>
                 </Sheet>
             </div>
-            {/* Add a sidebar container and apply fixed positioning */}
             <div
                 className={`px-12 py-20 xl:w-1/4 lg:w-1/3 md:w-1/2 md:flex hidden border-r-2 border-r-foreground-50 h-screen sticky top-0`}
             >
@@ -203,8 +216,17 @@ export default function Home() {
                     </div>
                     <div className="flex flex-col gap-4 mb-4">
                         <Button
+                            variant={`${isOnSpot ? "default" : "secondary"}`}
+                            className="mt-5"
+                            onClick={() => {
+                                setIsOnSpot(!isOnSpot);
+                            }}
+                        >
+                            {" "}
+                            Your Spot{" "}
+                        </Button>
+                        <Button
                             variant={`${all ? "default" : "secondary"}`}
-                            className={`mt-16`}
                             onClick={() => {
                                 setAll(!all);
                             }}
@@ -212,12 +234,12 @@ export default function Home() {
                             {" "}
                             All{" "}
                         </Button>
-                        <AddSheet />
+                        <AddSheet setListings={setListings}/>
                     </div>
                 </div>
             </div>
-            <div className="grid w-full h-fit place-items-center">
-                <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-8 p-12">
+            <div className={`grid w-full h-fit place-items-center ${isOnSpot ? "!h-screen" : ""}`}>
+                <div className={`grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-8 p-12 ${isOnSpot ? "!grid-cols-1" : ""}`}>
                     {listingsMap}
                 </div>
             </div>
@@ -233,6 +255,7 @@ interface MobileOptsProps {
     all: boolean;
     setAll: React.Dispatch<React.SetStateAction<boolean>>;
     lotsMapped: JSX.Element[];
+    setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
     onFromDateChange: (date: Date) => void;
     onToDateChange: (date: Date) => void;
 }
@@ -272,14 +295,19 @@ function MobileOpts(props: MobileOptsProps) {
                         {" "}
                         All{" "}
                     </Button>
-                    <AddSheet />
+                    <AddSheet setListings={props.setListings}/>
                 </div>
             </div>
         </div>
     );
 }
 
-function AddSheet() {
+interface AddSheetProps {
+    setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
+}
+
+
+function AddSheet(props: AddSheetProps) {
     const [lot, setLot] = React.useState<number>(40);
     const currDate = new Date();
     const currMonth = currDate.getMonth();
@@ -303,9 +331,7 @@ function AddSheet() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="default">
-                    Sell
-                </Button>
+                <Button variant="default">Sell</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -436,10 +462,144 @@ function AddSheet() {
                                     variant: "destructive",
                                 });
                             }
-                            return
+                            props.setListings(await getListings());
+                            return;
                         }}
                     >
                         Add
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+interface EditSheetProps {
+    fromDate: Date;
+    toDate: Date;
+    lot: number;
+    lotName: TAcceptedLot;
+    listing_id: string;
+    setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
+}
+function EditSheet(props: EditSheetProps) {
+    const [from, setFrom] = React.useState<Date | undefined>(props.fromDate);
+    const [to, setTo] = React.useState<Date | undefined>(props.toDate);
+    const [total, setTotal] = React.useState<number>(props.lot);
+    React.useEffect(() => {
+        setTotal(Math.round(convertToPrice(from!, to!)));
+    }, [from, to]);
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="default">Edit</Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Edit your spot</DialogTitle>
+                    <DialogDescription>
+                        Make changes to your spot
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="lot" className="text-right">
+                            Lot
+                        </Label>
+                        <Input
+                            readOnly
+                            id="lot"
+                            value={props.lot}
+                            className="col-span-3"
+                            type="number"
+                        />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="from" className="text-right">
+                            From
+                        </Label>
+                        <div className="col-span-3">
+                            <DatePicker setDate={setFrom} date={from} fn={(_d) => { }} />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="to" className="text-right">
+                            To
+                        </Label>
+                        <div className="col-span-3">
+                            <DatePicker setDate={setTo} date={to} fn={(_d) => { }} />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="lotName" className="text-right">
+                            Location
+                        </Label>
+                        <div className="col-span-3">
+                            <Input
+                                readOnly
+                                id="lotName"
+                                value={props.lot}
+                                className="col-span-3"
+                            />
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="total" className="text-right">
+                            Total
+                        </Label>
+                        <div className="col-span-3">
+                            <Input
+                                readOnly
+                                id="total"
+                                value={String(total)}
+                                className="col-span-3"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <DialogFooter>
+                    <Button
+                        type="button"
+                        onClick={async () => {
+                            if (to! < from!) {
+                                toast({
+                                    title: "Invalid date range",
+                                    description: "The end date must be after the start date",
+                                    variant: "destructive",
+                                });
+                                return;
+                            }
+                            const new_from = format(from!, "yyyy-MM-dd");
+                            const new_to = format(to!, "yyyy-MM-dd");
+                            const body: EditListing = {
+                                fromdate: new_from,
+                                todate: new_to,
+                            };
+                            const res = await fetch(`/api/listing?listing_id=${props.listing_id}`, {
+                                method: "PUT",
+                                body: JSON.stringify(body),
+                            });
+                            props.setListings(await getListings());
+                            if (res.status === 200) {
+                                toast({
+                                    title: "Space edited",
+                                });
+                            } else if (res.status === 401) {
+                                redirect("/sign-in");
+                            } else {
+                                toast({
+                                    title: `${res.status === 500
+                                        ? "Internal server error"
+                                        : "Unknown error"
+                                        }`,
+                                    description: `please contact support`,
+                                    variant: "destructive",
+                                });
+                            }
+                            return;
+                        }}
+                    >
+                        Edit
                     </Button>
                 </DialogFooter>
             </DialogContent>

@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     },
   );
   const jsonRes = await res.json();
-  return NextResponse.json(jsonRes, {status: res.status});
+  return NextResponse.json(jsonRes, { status: res.status });
 }
 
 export async function GET() {
@@ -34,4 +34,26 @@ export async function GET() {
   const json = (await res.json()) as ListingResponse[];
   const status = res.status;
   return NextResponse.json(json, { status });
+}
+
+export async function PUT(req: NextRequest) {
+  const json = await req.json();
+  const {userId} = auth();
+  const {searchParams} = new URL(req.url);
+  const param = searchParams.get("listing_id");
+  console.log(param);
+  const res = await fetch(
+      `https://4uinr4ae3cg3wigkjjl4zqihsu0ggtgw.lambda-url.us-east-2.on.aws/api/v1/edit/${param}?owner_id=${userId}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(json),
+      headers: {
+        "accept": "application/json",
+        "Content-Type": "application/json",
+        "X-API-KEY": process.env.API_KEY!,
+      },
+    },
+  );
+  const jsonRes = await res.json();
+  return NextResponse.json(jsonRes, { status: res.status });
 }
