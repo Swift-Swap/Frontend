@@ -101,7 +101,7 @@ export default function Nav() {
                 )}
                 {isSignedIn && (
                     <Link href="/dashboard">
-                        <Button variant="ghost" className="w-full flex justify-start">Dashboard</Button>
+                        <Button variant="outline" className="border-primary-blue w-full flex justify-start">Dashboard</Button>
                     </Link>
                 )}
                 <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>

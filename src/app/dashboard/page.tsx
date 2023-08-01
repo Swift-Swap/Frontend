@@ -43,10 +43,10 @@ export default function Dashboard() {
     return (
         <div className="flex flex-col flex-1 w-screen bg-blur bg-cover bg-no-repeat bg-center [text-shadow:_9px_9px_5px_rgb(0_0_0_/_40%)]">
             <div className="flex flex-col flex-1 w-screen p-6 items-center md:items-start md:px-40 lg:px-52 xl:px-60">
-                <div className="flex gap-4 items-center mb-12">
+                <div className="flex gap-4 items-end mb-12">
                     <h1 className={`font-bold text-7xl ${outfit.className}`}> Dashboard </h1>
                     <Link href="/buy">
-                        <Button variant="outline">
+                        <Button variant="outline" className="mb-2 bg-transparent border-primary-blue">
                             All Listings
                             <ArrowRight size={20}/>
                         </Button>
