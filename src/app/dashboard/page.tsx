@@ -29,14 +29,14 @@ export default function Dashboard() {
                 <div className="px-2 rounded-md bg-primary mb-4">
                     #{formatNumber(listing.spotnumber)}
                 </div>
-                <h5 className={`font-bold text-3xl uppercase text-[#939393] ${outfit.className}`}>{listing.lot.toUpperCase()}</h5>
+                <h5 className={`text-center font-bold text-3xl uppercase text-[#939393] ${outfit.className}`}>{listing.lot.toUpperCase()}</h5>
                 <p className="text-xs uppercase mb-12"> Parking Lot </p>
                 <div className="flex gap-2 items-center mb-4">
                     <CornerLeftDown size={15} />
                     <p className="tracking-widest text-xs uppercase"> Sold on </p>
                     <CornerRightDown size={15} />
                 </div>
-                <p className="text-3xl"> {format(sold, "PPP")} </p>
+                <p className="text-center text-3xl"> {format(sold, "PPP")} </p>
             </div>
         )
     })
@@ -121,7 +121,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <h3 className="uppercase text-center tracking-widest mb-2"> Recently purchased spots </h3>
-                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around gap-40">
+                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around gap-12">
                     {listingsMap}
                 </div>
             </div>
