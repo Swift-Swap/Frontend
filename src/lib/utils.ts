@@ -4,10 +4,8 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-export const lots = ["Any", "WAC", "PAC", "Tennis Courts", "Stadium"] as const;
 export const acceptedLots = ["WAC", "PAC", "Tennis Courts", "Stadium"] as const;
 export type TAcceptedLot = (typeof acceptedLots)[number];
-export type TLot = (typeof lots)[number];
 
 export interface CreateListing {
   spotnumber: number;
