@@ -5,7 +5,11 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { ArrowRight, CornerLeftDown, CornerRightDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
+import { PermDenied } from "@/components/perm_denied";
+import { redirect } from "next/navigation";
 export default function Dashboard() {
+    const {isSignedIn, user} = useUser()
     const metric_start_split = metrics.from_date.split("-");
     const metric_end_split = metrics.to_date.split("-");
     const metric_start = new Date(parseInt(metric_start_split[0]), parseInt(metric_start_split[1]), parseInt(metric_start_split[2]));
@@ -40,6 +44,13 @@ export default function Dashboard() {
             </div>
         )
     })
+    if (
+        !user?.primaryEmailAddress?.emailAddress?.endsWith("@eanesisd.net") &&
+        isSignedIn
+    ) {
+        return <PermDenied emailAddr={user?.primaryEmailAddress?.emailAddress!} />;
+    }
+    if (!isSignedIn) redirect("/sign-in");
     return (
         <div className="flex flex-col flex-1 w-screen bg-blur bg-cover bg-no-repeat bg-center [text-shadow:_9px_9px_5px_rgb(0_0_0_/_40%)]">
             <div className="flex flex-col flex-1 w-screen p-6 items-center md:items-start md:px-40 lg:px-52 xl:px-60">

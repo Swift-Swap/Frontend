@@ -102,6 +102,7 @@ export default function Home() {
     ) {
         return <PermDenied emailAddr={user?.primaryEmailAddress?.emailAddress!} />;
     }
+    if (!isSignedIn) redirect("/sign-in");
     const lotsMapped = acceptedLots.map((lot) => {
         return (
             <Button
