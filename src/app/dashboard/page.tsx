@@ -2,7 +2,9 @@ import { formatNumber, metrics, mockListings, stats } from "@/lib/utils";
 import React from "react";
 import { outfit } from "@/lib/utils";
 import { format } from "date-fns";
-import { CornerLeftDown, CornerRightDown } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, CornerLeftDown, CornerRightDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 export default function Dashboard() {
     const metric_start_split = metrics.from_date.split("-");
     const metric_end_split = metrics.to_date.split("-");
@@ -41,7 +43,15 @@ export default function Dashboard() {
     return (
         <div className="flex flex-col flex-1 w-screen bg-blur bg-cover bg-no-repeat bg-center [text-shadow:_9px_9px_5px_rgb(0_0_0_/_40%)]">
             <div className="flex flex-col flex-1 w-screen p-6 items-center md:items-start md:px-40 lg:px-52 xl:px-60">
-                <h1 className={`font-bold text-7xl mb-12 ${outfit.className}`}> Dashboard </h1>
+                <div className="flex gap-4 items-center mb-12">
+                    <h1 className={`font-bold text-7xl ${outfit.className}`}> Dashboard </h1>
+                    <Link href="/buy">
+                        <Button variant="outline">
+                            All Listings
+                            <ArrowRight size={20}/>
+                        </Button>
+                    </Link>
+                </div>
                 <h3 className="uppercase tracking-widest mb-2"> Your Stats </h3>
                 <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
                     <div className="flex flex-row gap-2 items-start">
