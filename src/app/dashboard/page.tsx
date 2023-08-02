@@ -279,8 +279,8 @@ export default function Dashboard() {
                     {" "}
                     Your Spots{" "}
                 </h3>
-                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 3xl:grid-cols-4 xl:grid-cols-3 gap-12 gap-x-40" id="edit">
-                    <AddSheet setListings={setListings} listings={listings}/>
+                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 3xl:grid-cols-4 xl:grid-cols-3 gap-12 gap-x-40 relative" id="edit">
+                    <AddSheet setListings={setListings} listings={listings} />
                     {listingsMapped}
                 </div>
             </div>
@@ -544,9 +544,11 @@ function AddSheet(props: AddSheetProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className={`h-full w-full py-4 flex justify-center px-0 bg-transparent text-white ${props.listings?.length === 0 ? "w-[280px] h-[240px]" : ""}`}>
-                    <Plus size={100} />
-                </Button>
+                <div className="absolute top-0 right-0 p-2">
+                    <Button variant="ghost" className={``}>
+                        <Plus size={24} />
+                    </Button>
+                </div>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -736,7 +738,7 @@ function VerifyListing() {
             <DialogTrigger asChild>
                 <Button variant="outline" className="border-primary mb-2">
                     Verify Spot
-                    <ArrowRight size={20}/>
+                    <ArrowRight size={20} />
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
