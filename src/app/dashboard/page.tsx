@@ -61,10 +61,10 @@ export default function Dashboard() {
         );
         return (
             <Card
-                className="flex flex-col items-center text-center relative py-2 px-8 bg-transparent text-white w-[250px] h-[250px]"
+                className="flex flex-col items-center text-center relative py-2 px-8 bg-transparent text-white w-full h-full"
                 key={l.spotnumber}
             >
-                <CardHeader>
+                <CardHeader className="flex-1 flex flex-col justify-between">
                     <CardTitle className="text-md md:text-xl">
                         {" "}
                         {format(start, "LLL dd")} -{" "}
@@ -76,7 +76,7 @@ export default function Dashboard() {
                             #{formatNumber(l.spotnumber)}
                         </div>
                     </CardDescription>
-                    <CardDescription className={`text-xl lg:text-2xl font-bold ${outfit.className}`}>
+                    <CardDescription className={`text-xl lg:text-2xl font-bold ${outfit.className} text-center`}>
                         {" "}
                         {l.lot}{" "}
                     </CardDescription>
@@ -279,7 +279,7 @@ export default function Dashboard() {
                     {" "}
                     Your Spots{" "}
                 </h3>
-                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 xl:grid-cols-3 gap-12 gap-x-40" id="edit">
+                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 3xl:grid-cols-4 xl:grid-cols-3 gap-12 gap-x-40" id="edit">
                     <AddSheet setListings={setListings} />
                     {listingsMapped}
                 </div>
@@ -543,7 +543,7 @@ function AddSheet(props: AddSheetProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className="h-[250px] w-[250px] py-4 flex justify-center px-0 bg-transparent text-white">
+                <Button variant="outline" className="h-full w-full py-4 flex justify-center px-0 bg-transparent text-white">
                     <Plus size={100} />
                 </Button>
             </DialogTrigger>
