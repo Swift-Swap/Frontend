@@ -28,7 +28,7 @@ async function getListings(): Promise<ListingResponse[]> {
 }
 
 export default function Dashboard() {
-    const {setTheme} = useTheme();
+    const { setTheme } = useTheme();
     const { isLoaded, isSignedIn, user } = useUser();
     const metric_start_split = metrics.from_date.split("-");
     const metric_end_split = metrics.to_date.split("-");
@@ -146,133 +146,144 @@ export default function Dashboard() {
         );
     });
     return (
-            <div className="flex flex-col flex-1 w-screen bg-blur bg-cover bg-no-repeat bg-center [text-shadow:_9px_9px_5px_rgb(0_0_0_/_40%)] bg-dark-background text-white">
-                <div className="flex flex-col flex-1 w-screen p-6 items-center md:items-start md:px-40 lg:px-52 xl:px-60">
-                    <div className="flex gap-4 items-end mb-12">
-                        <h1 className={`font-bold text-7xl ${outfit.className}`}>
-                            {" "}
-                            Dashboard{" "}
-                        </h1>
-                        <Link href="/buy">
-                            <Button
-                                variant="outline"
-                                className="mb-2 bg-transparent border-primary-blue"
-                            >
-                                All Listings
-                                <ArrowRight size={20} />
-                            </Button>
-                        </Link>
-                    </div>
-                    <h3 className="uppercase tracking-widest mb-2"> Your Stats </h3>
-                    <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
-                        <div className="flex flex-row gap-2 items-start">
-                            <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                                {stats.spots_sold}
-                            </h4>
-                            <div className="uppercase tracking-widest mt-2 text-xs">
-                                spots
-                                <br />
-                                sold
-                            </div>
-                        </div>
-                        <div className="flex flex-row gap-2 items-start">
-                            <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                                {stats.spots_bought}
-                            </h4>
-                            <div className="uppercase tracking-widest mt-2 text-xs">
-                                spots
-                                <br />
-                                bought
-                            </div>
-                        </div>
-                        <div className="flex flex-row gap-2 items-start">
-                            <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                                {formatter.format(stats.total_revenue)}
-                            </h4>
-                            <div className="uppercase tracking-widest mt-2 text-xs">
-                                made
-                                <br />
-                                from
-                                <br />
-                                selling
-                            </div>
-                        </div>
-                        <div className="flex flex-row gap-2 items-start">
-                            <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                                {stats.days_of_parking}
-                            </h4>
-                            <div className="uppercase tracking-widest mt-2 text-xs">
-                                days
-                                <br />
-                                <span>of parking</span>
-                                <br />
-                                sold
-                            </div>
+        <div className="flex flex-col flex-1 w-screen bg-blur bg-cover bg-no-repeat bg-center [text-shadow:_9px_9px_5px_rgb(0_0_0_/_40%)] bg-dark-background text-white">
+            <div className="flex flex-col flex-1 w-screen p-6 items-center md:items-start md:px-40 lg:px-52 xl:px-60">
+                <div className="flex gap-4 items-end mb-12">
+                    <h1 className={`font-bold text-7xl ${outfit.className}`}>
+                        {" "}
+                        Dashboard{" "}
+                    </h1>
+                    <Link href="/buy">
+                        <Button
+                            variant="outline"
+                            className="mb-2 bg-transparent border-primary-blue"
+                        >
+                            All Listings
+                            <ArrowRight size={20} />
+                        </Button>
+                    </Link>
+                </div>
+                <h3 className="uppercase tracking-widest mb-2"> Your Stats </h3>
+                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
+                    <div className="flex flex-row gap-2 items-start">
+                        <h4 className={`text-6xl font-bold ${outfit.className}`}>
+                            {stats.spots_sold}
+                        </h4>
+                        <div className="uppercase tracking-widest mt-2 text-xs">
+                            spots
+                            <br />
+                            sold
                         </div>
                     </div>
-                    <h3 className="uppercase text-center tracking-widest mb-2">
+                    <div className="flex flex-row gap-2 items-start">
+                        <h4 className={`text-6xl font-bold ${outfit.className}`}>
+                            {stats.spots_bought}
+                        </h4>
+                        <div className="uppercase tracking-widest mt-2 text-xs">
+                            spots
+                            <br />
+                            bought
+                        </div>
+                    </div>
+                    <div className="flex flex-row gap-2 items-start">
+                        <h4 className={`text-6xl font-bold ${outfit.className}`}>
+                            {formatter.format(stats.total_revenue)}
+                        </h4>
+                        <div className="uppercase tracking-widest mt-2 text-xs">
+                            made
+                            <br />
+                            from
+                            <br />
+                            selling
+                        </div>
+                    </div>
+                    <div className="flex flex-row gap-2 items-start">
+                        <h4 className={`text-6xl font-bold ${outfit.className}`}>
+                            {stats.days_of_parking}
+                        </h4>
+                        <div className="uppercase tracking-widest mt-2 text-xs">
+                            days
+                            <br />
+                            <span>of parking</span>
+                            <br />
+                            sold
+                        </div>
+                    </div>
+                </div>
+                <div className="flex gap-4 items-center mb-4">
+                    <h3 className="uppercase text-center tracking-widest">
                         {" "}
                         Recent Spot Metrics / Info{" "}
                     </h3>
-                    <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
-                        <div className="flex flex-col gap-2 items-start">
-                            <h4
-                                className={`text-6xl font-bold w-full text-center ${outfit.className}`}
-                            >
-                                {metrics.views}
-                            </h4>
-                            <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                Views
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2 items-start">
-                            <h4
-                                className={`text-6xl font-bold w-full text-center ${outfit.className}`}
-                            >
-                                {metrics.parking_lot}
-                            </h4>
-                            <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                parking lot
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2 items-start">
-                            <h4
-                                className={`text-6xl font-bold w-full text-center ${outfit.className}`}
-                            >
-                                #{formatNumber(metrics.spot_number)}
-                            </h4>
-                            <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                spot number
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2 items-start">
-                            <h4
-                                className={`text-6xl font-bold w-full text-center ${outfit.className}`}
-                            >
-                                {format(metric_start, "MMM dd")} - {format(metric_end, "MMM dd")}
-                            </h4>
-                            <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                Date range
-                            </div>
+                    <Link href="#edit">
+                        <Button
+                            variant="outline"
+                            className="bg-transparent border-primary-blue"
+                        >
+                            Edit Listings
+                            <ArrowRight size={20} />
+                        </Button>
+                    </Link>
+                </div>
+                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
+                    <div className="flex flex-col gap-2 items-start">
+                        <h4
+                            className={`text-6xl font-bold w-full text-center ${outfit.className}`}
+                        >
+                            {metrics.views}
+                        </h4>
+                        <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
+                            Views
                         </div>
                     </div>
-                    <h3 className="uppercase text-center tracking-widest mb-2">
-                        {" "}
-                        Recently purchased spots{" "}
-                    </h3>
-                    <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid xl:grid-cols-3 grid-cols-2 justify-around gap-12 mb-6">
-                        {mockListingsMap}
+                    <div className="flex flex-col gap-2 items-start">
+                        <h4
+                            className={`text-6xl font-bold w-full text-center ${outfit.className}`}
+                        >
+                            {metrics.parking_lot}
+                        </h4>
+                        <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
+                            parking lot
+                        </div>
                     </div>
-                    <h3 className="uppercase text-center tracking-widest mb-2">
-                        {" "}
-                        Your Spots{" "}
-                    </h3>
-                    <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 xl:grid-cols-3 gap-12 gap-x-40">
-                        {listingsMapped}
-                        <AddSheet setListings={setListings} />
+                    <div className="flex flex-col gap-2 items-start">
+                        <h4
+                            className={`text-6xl font-bold w-full text-center ${outfit.className}`}
+                        >
+                            #{formatNumber(metrics.spot_number)}
+                        </h4>
+                        <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
+                            spot number
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-2 items-start">
+                        <h4
+                            className={`text-6xl font-bold w-full text-center ${outfit.className}`}
+                        >
+                            {format(metric_start, "MMM dd")} - {format(metric_end, "MMM dd")}
+                        </h4>
+                        <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
+                            Date range
+                        </div>
                     </div>
                 </div>
+                <h3 className="uppercase text-center tracking-widest mb-2">
+                    {" "}
+                    Recently purchased spots{" "}
+                </h3>
+                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid xl:grid-cols-3 grid-cols-2 justify-around gap-12 mb-6">
+                    {mockListingsMap}
+                </div>
+                <h3 className="uppercase text-center tracking-widest mb-2">
+                    {" "}
+                    Your Spots{" "}
+                </h3>
+                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 xl:grid-cols-3 gap-12 gap-x-40" id="edit">
+                    {listingsMapped}
+                    <AddSheet setListings={setListings} />
+                </div>
             </div>
+        </div>
     );
 }
 
@@ -322,7 +333,7 @@ function EditSheet(props: EditSheetProps) {
                             From
                         </Label>
                         <div className="col-span-3">
-                            <DatePicker setDate={setFrom} date={from} fn={(d) => { 
+                            <DatePicker setDate={setFrom} date={from} fn={(d) => {
                                 if (d > to!) {
                                     setTo(d);
                                 }
@@ -695,8 +706,8 @@ function AddSheet(props: AddSheetProps) {
                                 } else {
                                     toast({
                                         title: `${res.status === 500
-                                                ? "Internal server error"
-                                                : "Unknown error"
+                                            ? "Internal server error"
+                                            : "Unknown error"
                                             }`,
                                         description: `${json.message}, please contact support (support@swiftswap.net)`,
                                         variant: "destructive",
