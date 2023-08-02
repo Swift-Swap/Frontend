@@ -279,8 +279,10 @@ export default function Dashboard() {
                     {" "}
                     Your Spots{" "}
                 </h3>
-                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 3xl:grid-cols-4 xl:grid-cols-3 gap-12 gap-x-40" id="edit">
-                    <AddSheet setListings={setListings} />
+                <div className={`rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 3xl:grid-cols-4 xl:grid-cols-3 gap-12 gap-x-40" ${listings.length === 0 ? "!grid-cols-1" : ""}`}
+                    id="edit"
+                >
+                    <AddSheet setListings={setListings} listings={listings}/>
                     {listingsMapped}
                 </div>
             </div>
@@ -517,6 +519,7 @@ function Delete(props: DeleteSheetProps) {
 
 interface AddSheetProps {
     setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
+    listings: ListingResponse[] | null;
 }
 
 function AddSheet(props: AddSheetProps) {
@@ -543,7 +546,7 @@ function AddSheet(props: AddSheetProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className="h-full w-full py-4 flex justify-center px-0 bg-transparent text-white">
+                <Button variant="outline" className={`h-full w-full py-4 flex justify-center px-0 bg-transparent text-white`}>
                     <Plus size={100} />
                 </Button>
             </DialogTrigger>
