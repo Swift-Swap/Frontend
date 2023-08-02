@@ -54,7 +54,7 @@ export default function About() {
         <p className="mt-6 ">
           Swift Swap is founded and managed by{" "}
           <Link
-            className="underline"
+            className="hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-[2px] before:origin-left before:transition-transform before:duration-300 before:scale-x-0 before:bg-foreground before:absolute before:left-0 before:bottom-0"
             target="_blank"
             href="https://github.com/zw96042"
           >
@@ -62,7 +62,7 @@ export default function About() {
           </Link>{" "}
           while{" "}
           <Link
-            className="underline"
+            className="hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-[2px] before:origin-left before:transition-transform before:duration-300 before:scale-x-0 before:bg-foreground before:absolute before:left-0 before:bottom-0"
             target="_blank"
             href="https://github.com/aadijo"
           >
@@ -71,7 +71,7 @@ export default function About() {
           </Link>{" "}
           and{" "}
           <Link
-            className="underline"
+            className="hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-[2px] before:origin-left before:transition-transform before:duration-300 before:scale-x-0 before:bg-foreground before:absolute before:left-0 before:bottom-0t"
             href="https://github.com/vibovenkat123"
             target="_blank"
           >
