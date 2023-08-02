@@ -61,7 +61,7 @@ export default function Dashboard() {
         );
         return (
             <Card
-                className="h-full w-full flex flex-col items-center text-center relative py-2 px-8 bg-transparent text-white"
+                className="flex flex-col items-center text-center relative py-2 px-8 bg-transparent text-white w-[250px] h-[250px]"
                 key={l.spotnumber}
             >
                 <CardHeader>
@@ -162,6 +162,7 @@ export default function Dashboard() {
                             <ArrowRight size={20} />
                         </Button>
                     </Link>
+                    <VerifyListing />
                 </div>
                 <h3 className="uppercase tracking-widest mb-2"> Your Stats </h3>
                 <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
@@ -279,8 +280,8 @@ export default function Dashboard() {
                     Your Spots{" "}
                 </h3>
                 <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 xl:grid-cols-3 gap-12 gap-x-40" id="edit">
-                    {listingsMapped}
                     <AddSheet setListings={setListings} />
+                    {listingsMapped}
                 </div>
             </div>
         </div>
@@ -370,7 +371,7 @@ function EditSheet(props: EditSheetProps) {
                             <Input
                                 readOnly
                                 id="total"
-                                value={String(total)}
+                                value={`$${String(total)}`}
                                 className="col-span-3"
                             />
                         </div>
@@ -467,7 +468,7 @@ function Delete(props: DeleteSheetProps) {
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                     <AlertDialogDescription>
                         This action cannot be undone. This will permanently delete your
-                        space.
+                        listing.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -542,7 +543,7 @@ function AddSheet(props: AddSheetProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className="h-full w-full py-4 flex justify-center px-0 bg-transparent text-white">
+                <Button variant="outline" className="h-[250px] w-[250px] py-4 flex justify-center px-0 bg-transparent text-white">
                     <Plus size={100} />
                 </Button>
             </DialogTrigger>
@@ -618,7 +619,7 @@ function AddSheet(props: AddSheetProps) {
                             <Input
                                 readOnly
                                 id="total"
-                                value={String(total)}
+                                value={`$${String(total)}`}
                                 className="col-span-3"
                             />
                         </div>
@@ -724,4 +725,64 @@ function AddSheet(props: AddSheetProps) {
             </DialogContent>
         </Dialog>
     );
+}
+
+
+function VerifyListing() {
+    const [lot, setLot] = React.useState(1);
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="outline" className="border-primary mb-2">
+                    Verify Spot
+                    <ArrowRight size={20}/>
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle className={`text-2xl`}>Verify Your Spot</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="lot" className="text-right">
+                            Space
+                        </Label>
+                        <Input
+                            id="lot"
+                            value={lot}
+                            onChange={(l) => {
+                                setLot(parseInt(l.target.value));
+                            }}
+                            className="col-span-3"
+                            type="number"
+                        />
+                    </div>
+                </div>
+                <DialogFooter>
+                    <Button variant="outline" onClick={() => {
+                        if (lot < 1) {
+                            toast({
+                                title: "Invalid lot",
+                                description: "The lot number must be greater than 0",
+                                variant: "destructive",
+                            });
+                            return;
+                        }
+                        if (isNaN(lot)) {
+                            toast({
+                                title: "Invalid lot",
+                                description: "The lot number must be a number",
+                                variant: "destructive",
+                            });
+                            return;
+                        }
+                        toast({
+                            title: "Verified!",
+                            description: "Your spot has been verified",
+                        });
+                    }}>Verify</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
 }
