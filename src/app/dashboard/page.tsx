@@ -322,7 +322,11 @@ function EditSheet(props: EditSheetProps) {
                             From
                         </Label>
                         <div className="col-span-3">
-                            <DatePicker setDate={setFrom} date={from} fn={(_d) => { }} />
+                            <DatePicker setDate={setFrom} date={from} fn={(d) => { 
+                                if (d > to!) {
+                                    setTo(d);
+                                }
+                            }} />
                         </div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -330,8 +334,7 @@ function EditSheet(props: EditSheetProps) {
                             To
                         </Label>
                         <div className="col-span-3">
-                            <DatePicker setDate={setTo} date={to} fn={(d) => {
-                                console.log(d)
+                            <DatePicker setDate={setTo} date={to} fn={(_d) => {
                             }} />
                         </div>
                     </div>
@@ -343,7 +346,7 @@ function EditSheet(props: EditSheetProps) {
                             <Input
                                 readOnly
                                 id="lotName"
-                                value={props.lot}
+                                value={props.lotName}
                                 className="col-span-3"
                             />
                         </div>
@@ -374,6 +377,14 @@ function EditSheet(props: EditSheetProps) {
                                     toast({
                                         title: "Invalid date range",
                                         description: "The end date must be after the start date",
+                                        variant: "destructive",
+                                    });
+                                    return;
+                                }
+                                if (new Date() >= from!) {
+                                    toast({
+                                        title: "Invalid date range",
+                                        description: "The start date must be in the future",
                                         variant: "destructive",
                                     });
                                     return;
@@ -505,7 +516,7 @@ function AddSheet(props: AddSheetProps) {
     const date = new Date(currYear, currMonth, currDay);
     const [from, setFrom] = React.useState<Date | undefined>(addDays(date, 1));
     const [to, setTo] = React.useState<Date | undefined>(addDays(date, 2));
-    const [lotName, setLotName] = React.useState<TAcceptedLot>("WAC");
+    const [lotName, setLotName] = React.useState<TAcceptedLot>("" as TAcceptedLot);
     const [total, setTotal] = React.useState<number>(0);
     React.useEffect(() => {
         setTotal(Math.round(convertToPrice(from!, to!)));
@@ -551,7 +562,11 @@ function AddSheet(props: AddSheetProps) {
                             From
                         </Label>
                         <div className="col-span-3">
-                            <DatePicker setDate={setFrom} date={from} fn={(_d) => { }} />
+                            <DatePicker setDate={setFrom} date={from} fn={(d) => {
+                                if (d > to!) {
+                                    setTo(d);
+                                }
+                            }} />
                         </div>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -603,10 +618,33 @@ function AddSheet(props: AddSheetProps) {
                         <Button
                             type="button"
                             onClick={async () => {
+                                if (lotName === "" as TAcceptedLot) {
+                                    toast({
+                                        title: "Invalid lot",
+                                        description: "You must select a lot",
+                                        variant: "destructive",
+                                    });
+                                    return;
+                                }
+                                if (isNaN(lot)) {
+                                    toast({
+                                        title: "Invalid lot",
+                                        description: "The lot number must be a number",
+                                        variant: "destructive",
+                                    });
+                                }
                                 if (to! < from!) {
                                     toast({
                                         title: "Invalid date range",
                                         description: "The end date must be after the start date",
+                                        variant: "destructive",
+                                    });
+                                    return;
+                                }
+                                if (new Date() >= from!) {
+                                    toast({
+                                        title: "Invalid date range",
+                                        description: "The start date must be in the future",
                                         variant: "destructive",
                                     });
                                     return;
