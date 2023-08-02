@@ -31,7 +31,7 @@ export default function Contact() {
             <Input
               id="replyto"
               type="email"
-              placeholder="johnsmidth@smidth.com"
+              placeholder="example@example.com"
               value={replyTo}
               onChange={(e) => {
                 setReplyTo(e.target.value);
@@ -44,7 +44,7 @@ export default function Contact() {
               value={name}
               id="name"
               type="text"
-              placeholder="John smidth"
+              placeholder="John Smith"
               onChange={(e) => {
                 setName(e.target.value);
               }}
