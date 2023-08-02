@@ -29,7 +29,7 @@ async function getListings(): Promise<ListingResponse[]> {
 
 export default function Dashboard() {
     const { setTheme } = useTheme();
-    const { isLoaded, isSignedIn, user } = useUser();
+    const { isLoaded, user } = useUser();
     const metric_start_split = metrics.from_date.split("-");
     const metric_end_split = metrics.to_date.split("-");
     const [listings, setListings] = React.useState<ListingResponse[] | null>([]);
@@ -279,9 +279,7 @@ export default function Dashboard() {
                     {" "}
                     Your Spots{" "}
                 </h3>
-                <div className={`rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 3xl:grid-cols-4 xl:grid-cols-3 gap-12 gap-x-40" ${listings.length === 0 ? "!grid-cols-1" : ""}`}
-                    id="edit"
-                >
+                <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 3xl:grid-cols-4 xl:grid-cols-3 gap-12 gap-x-40" id="edit">
                     <AddSheet setListings={setListings} listings={listings}/>
                     {listingsMapped}
                 </div>
@@ -546,7 +544,7 @@ function AddSheet(props: AddSheetProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className={`h-full w-full py-4 flex justify-center px-0 bg-transparent text-white`}>
+                <Button variant="outline" className={`h-full w-full py-4 flex justify-center px-0 bg-transparent text-white ${props.listings?.length === 0 ? "w-[280px] h-[240px]" : ""}`}>
                     <Plus size={100} />
                 </Button>
             </DialogTrigger>
