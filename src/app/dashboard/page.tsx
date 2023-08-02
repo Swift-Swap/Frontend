@@ -260,7 +260,7 @@ export default function Dashboard() {
                         {" "}
                         Recently purchased spots{" "}
                     </h3>
-                    <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid xl:jgrid-cols-3 grid-cols-2 justify-around gap-12 mb-6">
+                    <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid xl:grid-cols-3 grid-cols-2 justify-around gap-12 mb-6">
                         {mockListingsMap}
                     </div>
                     <h3 className="uppercase text-center tracking-widest mb-2">
