@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/dialog";
 import { redirect, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { toast } from "@/components/ui/use-toast";
 
 export default function Home() {
   const [fromDate, setFromDate] = React.useState<Date | undefined>(undefined);
@@ -193,7 +194,7 @@ export default function Home() {
           {listingsMap}
           {listingsMap.length === 0 && (
             <div className="flex flex-col items-center justify-center">
-              <h1 className="text-3xl"> There are no spots </h1>
+              <h1 className="text-3xl"> {loaded ? "There are no spots" : "Loading..."} </h1>
             </div>
           )}
         </div>
@@ -233,9 +234,11 @@ export default function Home() {
                       }
                       e.remove();
                     } else alert("your browser doesn't support copying");
-                    return;
-                  }
-                  navigator.clipboard.writeText(text);
+                  } else navigator.clipboard.writeText(text);
+                  toast({
+                    title: "Copied to clipboard!",
+                    description: `Share this link with your friends!: ${text}`,
+                  })
                 }}
               >
                 <Share className="h-4 w-4" />
