@@ -22,9 +22,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ChevronsRight, Info } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { useSearchParams } from "next/navigation";
 
 
 export default function Home() {
+    const searchParams = useSearchParams();
+    const info = searchParams.get("info");
+    const [moreInfoLink, setMoreInfoLink] = React.useState<string | null>(null);
     const [fromDate, setFromDate] = React.useState<Date | undefined>(undefined);
     const [listings, setListings] = React.useState<ListingResponse[] | null>([]);
     const [toDate, setToDate] = React.useState<Date | undefined>(undefined);

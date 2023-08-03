@@ -273,12 +273,12 @@ export default function Dashboard() {
                 <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid xl:grid-cols-3 grid-cols-2 justify-around gap-12 mb-6">
                     {mockListingsMap}
                 </div>
-                <h3 className="uppercase text-center tracking-widest mb-2">
+                <h3 className="uppercase text-center tracking-widest mb-2 flex items-center">
                     {" "}
                     Your Spots{" "}
+                    <AddSheet setListings={setListings} listings={listings} />
                 </h3>
                 <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 grid grid-cols-2 3xl:grid-cols-4 xl:grid-cols-3 gap-12 gap-x-40 relative" id="edit">
-                    <AddSheet setListings={setListings} listings={listings} />
                     {listingsMapped}
                 </div>
             </div>
@@ -457,7 +457,7 @@ function Delete(props: DeleteSheetProps) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="ghost" className="absolute top-0 right-0 hover:bg-transparent hover:text-red-500">
+                <Button variant="ghost" className={`absolute top-0 right-0 hover:bg-transparent hover:text-red-500`}>
                     <Trash size={20} />
                 </Button>
             </AlertDialogTrigger>
@@ -542,9 +542,9 @@ function AddSheet(props: AddSheetProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <div className="absolute top-0 right-0 p-2">
-                    <Button variant="ghost" className={``}>
-                        <Plus size={24} />
+                <div className="p-2">
+                    <Button variant="ghost" className={`mb-1`}>
+                        <Plus size={20} />
                     </Button>
                 </div>
             </DialogTrigger>
