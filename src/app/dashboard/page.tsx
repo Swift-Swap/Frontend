@@ -33,16 +33,14 @@ export default function Dashboard() {
     const metric_start_split = metrics.from_date.split("-");
     const metric_end_split = metrics.to_date.split("-");
     const [listings, setListings] = React.useState<ListingResponse[] | null>([]);
-    const [loaded, setLoaded] = React.useState(false);
     React.useEffect(() => {
         async function main() {
             setListings(await getListings());
-            setLoaded(true);
         }
         main()
         setTheme("dark")
     }, [setTheme])
-    if (!listings || !loaded || !isLoaded) return null
+    if (!listings || !isLoaded) return null
     if (user && user.primaryEmailAddress && user.primaryEmailAddress.emailAddress.split("@")[1] !== "eanesisd.net") {
         return NextResponse.redirect("/perm-denied");
     }
