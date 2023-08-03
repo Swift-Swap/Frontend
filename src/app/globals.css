@@ -78,10 +78,10 @@
     @apply border-border;
   }
   html {
-    @apply scroll-smooth
+    @apply scroll-smooth;
   }
   body {
-    @apply bg-gradient-to-r ;
+    @apply bg-gradient-to-r;
   }
 }
 

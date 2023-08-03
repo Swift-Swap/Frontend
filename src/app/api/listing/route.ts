@@ -38,11 +38,10 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   const json = await req.json();
-  const { userId } = auth();
   const { searchParams } = new URL(req.url);
   const param = searchParams.get("listing_id");
   const res = await fetch(
-    `https://4uinr4ae3cg3wigkjjl4zqihsu0ggtgw.lambda-url.us-east-2.on.aws/api/v1/edit/${param}?owner_id=${userId}`,
+    `https://4uinr4ae3cg3wigkjjl4zqihsu0ggtgw.lambda-url.us-east-2.on.aws/api/v1/edit/${param}`,
     {
       method: "PUT",
       body: JSON.stringify(json),
