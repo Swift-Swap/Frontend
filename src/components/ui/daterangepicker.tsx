@@ -22,8 +22,8 @@ export function DatePicker(props: Props) {
     const currYear = new Date().getFullYear();
     const fromYear = currYear % 2 === 1 ? currYear : currYear - 1;
     const toYear = currYear % 2 === 0 ? currYear : currYear + 1;
-    const fromMonth = new Date(fromYear, 7, 16);
-    const toMonth = new Date(toYear, 4, 26);
+    const fromMonth = new Date(fromYear, 7, 1);
+    const toMonth = new Date(toYear, 4, 31);
     const { fn, date, setDate } = props;
     return (
         <Popover>

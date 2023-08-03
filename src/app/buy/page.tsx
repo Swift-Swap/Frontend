@@ -29,17 +29,14 @@ export default function Home() {
     const [listings, setListings] = React.useState<ListingResponse[] | null>([]);
     const [toDate, setToDate] = React.useState<Date | undefined>(undefined);
     const [currLots, setCurrLots] = React.useState<string[]>([]);
-    const [all, setAll] = React.useState<boolean>(true);
     const { isLoaded, user } = useUser();
     function onFromDateChange(date: Date) {
         setFromDate(date);
-        setAll(false);
         if (typeof localStorage === "undefined") return;
         localStorage.setItem("fromDate", date.toDateString());
     }
     function onToDateChange(date: Date) {
         setToDate(date);
-        setAll(false);
         if (typeof localStorage === "undefined") return;
         localStorage.setItem("toDate", date.toDateString());
     }
@@ -65,7 +62,7 @@ export default function Home() {
     const lotsMapped = acceptedLots.map((lot) => {
         return (
             <Button
-                variant={`${currLots.includes(lot.toLowerCase()) && !all
+                variant={`${currLots.includes(lot.toLowerCase())
                     ? "default"
                     : "secondary"
                     }`}
@@ -76,7 +73,6 @@ export default function Home() {
                         return;
                     }
                     setCurrLots([...currLots, lot.toLowerCase()]);
-                    setAll(false);
                 }}
             >
                 {lot}
@@ -86,7 +82,6 @@ export default function Home() {
     const listingsMap = listings
         .filter((l) => {
             if (user && l.user_id === user.id) return false;
-            if (all) return true;
             return (
                 currLots.includes(l.lot.toLowerCase()) &&
                 format(fromDate!, "yyyy-MM-dd") === l.start_date &&
@@ -149,8 +144,6 @@ export default function Home() {
                         setCurrTo={setToDate}
                         currFrom={fromDate}
                         currTo={toDate}
-                        all={all}
-                        setAll={setAll}
                         lotsMapped={lotsMapped}
                         onFromDateChange={onFromDateChange}
                         onToDateChange={onToDateChange}
@@ -178,8 +171,6 @@ interface OptsProps {
     setCurrTo: React.Dispatch<React.SetStateAction<Date | undefined>>;
     currFrom: Date | undefined;
     currTo: Date | undefined;
-    all: boolean;
-    setAll: React.Dispatch<React.SetStateAction<boolean>>;
     lotsMapped: JSX.Element[];
     setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
     onFromDateChange: (date: Date) => void;
@@ -207,17 +198,6 @@ function Opts(props: OptsProps) {
                         date={props.currTo}
                         fn={props.onToDateChange}
                     />
-                </div>
-                <div className="flex flex-col gap-4 mb-4">
-                    <Button
-                        variant={`${props.all ? "default" : "secondary"}`}
-                        onClick={() => {
-                            props.setAll(!props.all);
-                        }}
-                    >
-                        {" "}
-                        All{" "}
-                    </Button>
                 </div>
             </div>
         </div>
