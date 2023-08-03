@@ -81,6 +81,23 @@ async function getListings(): Promise<ListingResponse[]> {
     return sorted
 }
 
+function getDays(listings: ListingResponse[]): number {
+    const bought = listings.filter((l) => l.bought);
+    let total = 0
+    for (const listing of bought) {
+        total += listing.days
+    }
+    return total
+}
+function getRevenue(listings: ListingResponse[]): number {
+    const bought = listings.filter((l) => l.bought);
+    let total = 0
+    for (const listing of bought) {
+        total += convertToPrice(parseSplitDate(listing.start_date), parseSplitDate(listing.end_date))
+    }
+    return total
+}
+
 async function getPurchased(): Promise<ListingRecently[]> {
     const res = await fetch("/api/listing/user/purchased");
     const json = await res.json();
@@ -223,27 +240,27 @@ export default function Dashboard() {
                 <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
                     <div className="flex flex-row gap-2 items-start">
                         <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                            {stats.spots_sold}
+                            {listings.filter((l) => l.bought).length}
                         </h4>
                         <div className="uppercase tracking-widest mt-2 text-xs">
-                            spots
+                            {listings.filter((l) => l.bought).length === 1 ? "spot" : "spots"}
                             <br />
                             sold
                         </div>
                     </div>
                     <div className="flex flex-row gap-2 items-start">
                         <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                            {stats.spots_bought}
+                            {recentlyBought?.length}
                         </h4>
                         <div className="uppercase tracking-widest mt-2 text-xs">
-                            spots
+                            {recentlyBought?.length === 1 ? "spot" : "spots"}
                             <br />
                             bought
                         </div>
                     </div>
                     <div className="flex flex-row gap-2 items-start">
                         <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                            {formatter.format(stats.total_revenue)}
+                            {formatter.format(getRevenue(listings))}
                         </h4>
                         <div className="uppercase tracking-widest mt-2 text-xs">
                             made
@@ -255,7 +272,7 @@ export default function Dashboard() {
                     </div>
                     <div className="flex flex-row gap-2 items-start">
                         <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                            {stats.days_of_parking}
+                            {getDays(listings)}
                         </h4>
                         <div className="uppercase tracking-widest mt-2 text-xs">
                             days
