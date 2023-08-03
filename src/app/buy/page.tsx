@@ -21,7 +21,7 @@ import {
 
 import { format } from "date-fns";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ArrowRight, ChevronsRight, Info, Share } from "lucide-react";
+import { ArrowRight, ChevronsRight, FilterX, Info, Share, SlidersHorizontal } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import {
@@ -168,8 +168,9 @@ export default function Home() {
     <div className="w-full flex flex-col md:flex-row p-2">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" className="w-min">
-            <ChevronsRight />
+          <Button variant="outline" className="w-min flex items-center gap-2">
+            <SlidersHorizontal />
+            Filters
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex">
@@ -319,7 +320,7 @@ function Opts(props: OptsProps) {
             fn={props.onToDateChange}
           />
         </div>
-        <div className="flex flex-col gap-4 mb-4">
+        <div className="flex flex-col gap-4 mb-4 mt-12">
           <Button
             variant={`${props.all ? "default" : "secondary"}`}
             onClick={() => {
@@ -327,7 +328,7 @@ function Opts(props: OptsProps) {
             }}
           >
             {" "}
-            All{" "}
+            No Filters{" "}
           </Button>
         </div>
       </div>
