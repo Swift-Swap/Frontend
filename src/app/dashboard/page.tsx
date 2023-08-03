@@ -282,49 +282,49 @@ export default function Dashboard() {
                     </Link>
                 </div>
                 <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
-                {listings.length === 0 && <h1 className={`text-7xl ${outfit.className}`}> ${listingsLoaded ? "No Listings" : "Loading..."} </h1>}
-                {listings.length > 0 && (
+                    {listings.length === 0 && <h1 className={`text-7xl ${outfit.className}`}> {listingsLoaded ? "No Listings" : "Loading..."} </h1>}
+                    {listings.length > 0 && (
                         <>
-                        <div className="flex flex-col gap-2 items-start">
-                            <h4
-                                className={`text-6xl font-bold w-full text-center ${outfit.className}`}
-                            >
-                                {listings[0].views}
-                            </h4>
-                            <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                Views
+                            <div className="flex flex-col gap-2 items-start">
+                                <h4
+                                    className={`text-6xl font-bold w-full text-center ${outfit.className}`}
+                                >
+                                    {listings[0].views}
+                                </h4>
+                                <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
+                                    {listings[0].views === 1 ? "View" : "Views"}
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex flex-col gap-2 items-start">
-                            <h4
-                                className={`text-6xl font-bold w-full text-center ${outfit.className}`}
-                            >
-                                {listings[0].lot}
-                            </h4>
-                            <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                parking lot
+                            <div className="flex flex-col gap-2 items-start">
+                                <h4
+                                    className={`text-6xl font-bold w-full text-center ${outfit.className}`}
+                                >
+                                    {listings[0].lot}
+                                </h4>
+                                <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
+                                    parking lot
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex flex-col gap-2 items-start">
-                            <h4
-                                className={`text-6xl font-bold w-full text-center ${outfit.className}`}
-                            >
-                                #{formatNumber(listings[0].spotnumber)}
-                            </h4>
-                            <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                spot number
+                            <div className="flex flex-col gap-2 items-start">
+                                <h4
+                                    className={`text-6xl font-bold w-full text-center ${outfit.className}`}
+                                >
+                                    #{formatNumber(listings[0].spotnumber)}
+                                </h4>
+                                <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
+                                    spot number
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex flex-col gap-2 items-start">
-                            <h4
-                                className={`text-6xl font-bold w-full text-center ${outfit.className}`}
-                            >
-                                {format(parseSplitDate(listings[0].start_date), "MMM dd")} - {format(parseSplitDate(listings[0].start_date), "MMM dd")}
-                            </h4>
-                            <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                Date range
+                            <div className="flex flex-col gap-2 items-start">
+                                <h4
+                                    className={`text-6xl font-bold w-full text-center ${outfit.className}`}
+                                >
+                                    {format(parseSplitDate(listings[0].start_date), "MMM dd")} - {format(parseSplitDate(listings[0].end_date), "MMM dd")}
+                                </h4>
+                                <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
+                                    Date range
+                                </div>
                             </div>
-                        </div>
                         </>
                     )}
                 </div>
@@ -497,8 +497,8 @@ function EditSheet(props: EditSheetProps) {
                                 } else {
                                     toast({
                                         title: `${res.status === 500
-                                                ? "Internal server error"
-                                                : "Unknown error"
+                                            ? "Internal server error"
+                                            : "Unknown error"
                                             }`,
                                         description: `please contact support (support@swiftswap.net)`,
                                         variant: "destructive",
@@ -563,8 +563,8 @@ function Delete(props: DeleteSheetProps) {
                             } else {
                                 toast({
                                     title: `${res.status === 500
-                                            ? "Internal server error"
-                                            : "Unknown error"
+                                        ? "Internal server error"
+                                        : "Unknown error"
                                         }`,
                                     description: `please contact support (support@swiftswap.net)`,
                                     variant: "destructive",
@@ -785,8 +785,8 @@ function AddSheet(props: AddSheetProps) {
                                 } else {
                                     toast({
                                         title: `${res.status === 500
-                                                ? "Internal server error"
-                                                : "Unknown error"
+                                            ? "Internal server error"
+                                            : "Unknown error"
                                             }`,
                                         description: `${json.message}, please contact support (support@swiftswap.net)`,
                                         variant: "destructive",

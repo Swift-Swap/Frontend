@@ -20,6 +20,7 @@ export const roboto = Roboto({
 export async function getListings(): Promise<ListingResponse[]> {
     const res = await fetch("/api/listing", { method: "GET" });
     const json = (await res.json()) as ListingResponse[];
+    if (!json) return []
     const sorted = json.sort((a, b) => {
         const a_date = parseSplitDate(a.start_date);
         const b_date = parseSplitDate(b.start_date);
@@ -55,6 +56,7 @@ export interface CreateListing {
 
 export interface ListingResponse {
     views: number;
+    bought: boolean;
     spaceid: string;
     spotnumber: number;
     lot: TAcceptedLot;
@@ -62,7 +64,7 @@ export interface ListingResponse {
     start_date: string;
     end_date: string;
     price: number;
-    owner_Id: string;
+    user_id: string;
 }
 
 export interface Stats {

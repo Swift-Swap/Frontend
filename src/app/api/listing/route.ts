@@ -31,7 +31,8 @@ export async function GET() {
       },
     },
   );
-  const json = (await res.json()) as ListingResponse[];
+  const rawJson = await res.json();
+  const json = rawJson as ListingResponse[];
   const status = res.status;
   return NextResponse.json(json, { status });
 }

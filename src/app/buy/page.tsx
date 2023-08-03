@@ -76,7 +76,7 @@ export default function Home() {
                 const listing = listings.find((l) => l.spaceid === info);
                 if (listing) {
                     if (!user) return;
-                    if (listing.owner_Id === user?.id) {
+                    if (listing.user_id === user?.id) {
                         redirect("/dashboard#edit");
                     }
                     setMoreInfo(listing);
@@ -117,13 +117,14 @@ export default function Home() {
     });
     const listingsMap = listings
         .filter((l) => {
-            if (user && l.owner_Id === user.id) return false;
+            if (l.bought) return false;
+            if (user && l.user_id === user.id) return false;
             if (all) return true;
             return (
                 currLots.includes(l.lot.toLowerCase()) &&
                 format(fromDate!, "yyyy-MM-dd") === l.start_date &&
                 format(toDate!, "yyyy-MM-dd") === l.end_date &&
-                (user ? l.owner_Id != user.id : true)
+                (user ? l.user_id != user.id : true)
             );
         })
         .map((listing) => {
@@ -148,7 +149,7 @@ export default function Home() {
                         >
                             {" "}
                             {listing.lot}{" "}
-                            <div className={`text-sm md:text-md flex items-center mt-2 gap-2 ${roboto.className}`}>
+                            <div className={`text-sm md:text-md flex items-center mt-2 gap-2 ${roboto.className} justify-center`}>
                                 <Eye />
                                 {listing.views} 
                                 <p className="uppercase tracking-widest">{listing.views === 1 ? "view" : "views"}</p>
@@ -291,8 +292,16 @@ export default function Home() {
                                     title: "Buying...",
                                 })
                                 const res = await fetch(`/api/listing/buy?listing_id=${moreInfo?.spaceid}`, {method: "POST"});
+                                if (res.status === 400) {
+                                    toast({
+                                        title: "This will overlap with another spot",
+                                        description: "Try another spot or time range",
+                                        variant: "destructive"
+                                    })
+                                    return;
+                                }
                                 toast({
-                                    title: `Bought!!`
+                                    title: `Bought!! ${res.status}`
                                 })
                             }}>
                                 Buy

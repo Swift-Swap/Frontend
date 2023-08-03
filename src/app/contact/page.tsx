@@ -19,7 +19,7 @@ export default function Contact() {
         {" "}
         Contact SwiftSwap{" "}
       </h1>
-      <p className="mb-14">
+      <p className="mb-14 p-2 text-center">
         {" "}
         Need to get in touch? Just fill out the form below and we’ll be right
         with you!{" "}

@@ -14,5 +14,6 @@ export async function GET() {
     },
   );
   const json = await res.json();
+  console.log(json)
   return NextResponse.json(json, { status: res.status });
 }
