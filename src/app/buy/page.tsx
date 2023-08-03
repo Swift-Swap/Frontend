@@ -142,7 +142,7 @@ export default function Home() {
                         </CardTitle>
                         <CardDescription className="text-sm md:text-md rounded-lg bg-primary px-2">
                             {" "}
-                            <p className="text-foreground">#{formatNumber(listing.spotnumber)}{" "}</p>
+                            <p className="text-white">#{formatNumber(listing.spotnumber)}{" "}</p>
                         </CardDescription>
                         <CardDescription
                             className={`font-bold text-xl md:text-2xl ${outfit.className}`}
@@ -303,6 +303,7 @@ export default function Home() {
                                 toast({
                                     title: `Bought!! ${res.status}`
                                 })
+                                setListings(await getListings())
                             }}>
                                 Buy
                                 <ArrowRight size={20} />

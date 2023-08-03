@@ -21,6 +21,8 @@ import {
     ArrowRight,
     CornerLeftDown,
     CornerRightDown,
+    Pin,
+    PinOff,
     Plus,
     Trash,
 } from "lucide-react";
@@ -118,9 +120,12 @@ export default function Dashboard() {
     const [listingsLoaded, setListingsLoaded] = React.useState<boolean>(false);
     const [recentlyBought, setRecentlyBought] = React.useState<ListingRecently[] | null>([]);
     const [recentlyBoughtLoaded, setRecentlyBoughtLoaded] = React.useState<boolean>(false);
+    const [pinned, setPinned] = React.useState<ListingResponse | null>(null);
     React.useEffect(() => {
         async function main() {
-            setListings(await getListings());
+            const res = await getListings();
+            setListings(res);
+            setPinned(res[0]);
             setListingsLoaded(true);
             setRecentlyBought(await getPurchased());
             setRecentlyBoughtLoaded(true);
@@ -179,6 +184,12 @@ export default function Dashboard() {
                         setListings={setListings}
                     />
                     <Delete listing_id={l.spaceid} setListings={setListings} />
+                    <Button variant="ghost" className="top-0 left-0 absolute w-min hover:bg-transparent hover:text-green-300" onClick={() => {
+                        setPinned(l)
+                    }}>
+                        {pinned?.spaceid === l.spaceid && <PinOff />}
+                        {pinned?.spaceid !== l.spaceid && <Pin />}
+                    </Button>
                 </CardHeader>
             </Card>
         );
@@ -299,24 +310,24 @@ export default function Dashboard() {
                     </Link>
                 </div>
                 <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
-                    {listings.length === 0 && <h1 className={`text-7xl ${outfit.className}`}> {listingsLoaded ? "No Listings" : "Loading..."} </h1>}
-                    {listings.length > 0 && (
+                    {!pinned && listingsLoaded && <h1 className={`text-7xl ${outfit.className}`}> {listings.length === 0 ? "No Listings" : "No Pinned Listing"} </h1>}
+                    {listings.length > 0 && pinned && (
                         <>
                             <div className="flex flex-col gap-2 items-start">
                                 <h4
                                     className={`text-6xl font-bold w-full text-center ${outfit.className}`}
                                 >
-                                    {listings[0].views}
+                                    {pinned?.views}
                                 </h4>
                                 <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
-                                    {listings[0].views === 1 ? "View" : "Views"}
+                                    {pinned?.views === 1 ? "View" : "Views"}
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2 items-start">
                                 <h4
                                     className={`text-6xl font-bold w-full text-center ${outfit.className}`}
                                 >
-                                    {listings[0].lot}
+                                    {pinned?.lot}
                                 </h4>
                                 <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
                                     parking lot
@@ -326,7 +337,7 @@ export default function Dashboard() {
                                 <h4
                                     className={`text-6xl font-bold w-full text-center ${outfit.className}`}
                                 >
-                                    #{formatNumber(listings[0].spotnumber)}
+                                    {pinned && `#${formatNumber(pinned.spotnumber)}`}
                                 </h4>
                                 <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
                                     spot number
@@ -336,7 +347,7 @@ export default function Dashboard() {
                                 <h4
                                     className={`text-6xl font-bold w-full text-center ${outfit.className}`}
                                 >
-                                    {format(parseSplitDate(listings[0].start_date), "MMM dd")} - {format(parseSplitDate(listings[0].end_date), "MMM dd")}
+                                    {pinned && `${format(parseSplitDate(pinned?.start_date), "MMM dd")} - ${format(parseSplitDate(listings[0].end_date), "MMM dd")}`}
                                 </h4>
                                 <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
                                     Date range
