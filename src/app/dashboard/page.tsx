@@ -184,8 +184,9 @@ export default function Dashboard() {
                         setListings={setListings}
                     />
                     <Delete listing_id={l.spaceid} setListings={setListings} />
-                    <Button variant="ghost" className="top-0 left-0 absolute w-min hover:bg-transparent hover:text-green-300" onClick={() => {
+                    <Button variant="ghost" className="top-0 left-0 absolute w-min hover:bg-transparent hover:text-green-300" onClick={async () => {
                         setPinned(l)
+                        setListings(await getListings())
                     }}>
                         {pinned?.spaceid === l.spaceid && <PinOff />}
                         {pinned?.spaceid !== l.spaceid && <Pin />}
@@ -347,7 +348,7 @@ export default function Dashboard() {
                                 <h4
                                     className={`text-6xl font-bold w-full text-center ${outfit.className}`}
                                 >
-                                    {pinned && `${format(parseSplitDate(pinned?.start_date), "MMM dd")} - ${format(parseSplitDate(listings[0].end_date), "MMM dd")}`}
+                                    {pinned && `${format(parseSplitDate(pinned?.start_date), "MMM dd")} - ${format(parseSplitDate(pinned?.end_date), "MMM dd")}`}
                                 </h4>
                                 <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
                                     Date range
