@@ -102,6 +102,12 @@ export default function Dashboard() {
         }
         main();
     }, []);
+    React.useEffect(() => {
+        async function main() {
+            setRecentlyBought(await getPurchased());
+        }
+        main()
+    }, [listings, pinned]);
     if (!listings || !isLoaded) return null;
     if (
         user &&
@@ -115,6 +121,7 @@ export default function Dashboard() {
         const end = parseSplitDate(l.end_date);
         return (
             <ListingItem
+                setRecentlyBought={setRecentlyBought}
                 l={l}
                 key={l.spaceid}
                 end={end}
@@ -454,7 +461,7 @@ function EditSheet(props: EditSheetProps) {
                                         body: JSON.stringify(body),
                                     },
                                 );
-                                props.setListings(await getUserListings());
+                                const json = await res.json();
                                 if (res.status === 200) {
                                     toast({
                                         title: "Space edited",
@@ -462,6 +469,15 @@ function EditSheet(props: EditSheetProps) {
                                 } else if (res.status === 401) {
                                     redirect("/sign-in");
                                 } else if (res.status === 400) {
+                                    if (json.includes("weekend")) {
+                                        toast({
+                                            title: "Invalid date range",
+                                            description:
+                                                "You cannot add a spot that includes a weekend",
+                                            variant: "destructive",
+                                        });
+                                        return
+                                    }
                                     toast({
                                         title: "Invalid date range",
                                         description:
@@ -478,6 +494,7 @@ function EditSheet(props: EditSheetProps) {
                                         variant: "destructive",
                                     });
                                 }
+                                props.setListings(await getUserListings());
                                 return;
                             }}
                         >
@@ -527,7 +544,6 @@ function Delete(props: DeleteSheetProps) {
                                     method: "DELETE",
                                 },
                             );
-                            props.setListings(await getUserListings());
                             if (res.status === 200) {
                                 toast({
                                     title: "Space deleted",
@@ -547,6 +563,7 @@ function Delete(props: DeleteSheetProps) {
                             toast({
                                 title: "Space deleted",
                             });
+                            props.setListings(await getUserListings());
                             return;
                         }}
                     >
@@ -750,6 +767,15 @@ function AddSheet(props: AddSheetProps) {
                                         variant: "destructive",
                                     });
                                 } else if (res.status === 400) {
+                                    if (json.includes("weekend")) {
+                                        toast({
+                                            title: "Invalid date range",
+                                            description:
+                                                "You cannot add a spot that includes a weekend",
+                                            variant: "destructive",
+                                        });
+                                        return
+                                    }
                                     toast({
                                         title: "Invalid date range",
                                         description:
@@ -850,13 +876,14 @@ interface ListingProps {
     l: ListingResponse;
     start: Date;
     end: Date;
+    setRecentlyBought: React.Dispatch<React.SetStateAction<ListingRecently[] | null>>;
     setListings: React.Dispatch<React.SetStateAction<ListingResponse[] | null>>;
     pinned: ListingResponse | null;
     setPinned: React.Dispatch<React.SetStateAction<ListingResponse | null>>;
 }
 
 function ListingItem(props: ListingProps) {
-    const { l, start, end, pinned, setPinned, setListings } = props;
+    const { l, start, end, pinned, setPinned, setListings, setRecentlyBought} = props;
     return (
         <Card
             className="flex flex-col items-center text-center relative py-2 px-8 bg-transparent text-white w-full h-full"
@@ -894,11 +921,9 @@ function ListingItem(props: ListingProps) {
                     onClick={async () => {
                         if (pinned?.spaceid === l.spaceid) {
                             setPinned(null);
-                            setListings(await getUserListings());
                             return;
                         }
                         setPinned(l);
-                        setListings(await getUserListings());
                     }}
                 >
                     {pinned?.spaceid === l.spaceid && <PinOff />}
