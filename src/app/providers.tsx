@@ -5,10 +5,13 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const path = usePathname()
+  const path = usePathname();
   return (
-          <ThemeProvider enableSystem forcedTheme={path === "/dashboard" ? "dark" : undefined}>
-            {children}
-          </ThemeProvider>
-     )
+    <ThemeProvider
+      enableSystem
+      forcedTheme={path === "/dashboard" ? "dark" : undefined}
+    >
+      {children}
+    </ThemeProvider>
+  );
 }

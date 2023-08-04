@@ -8,41 +8,54 @@ import { ArrowRight } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { outfit } from "@/lib/utils";
 
+function onLoad(
+  setShowed: React.Dispatch<React.SetStateAction<boolean>>,
+  showed: boolean,
+  toast: (obj: {
+    title: string;
+    description: string;
+    variant: "destructive" | "default";
+    action: JSX.Element;
+  }) => any,
+) {
+  if (typeof localStorage === "undefined") return;
+  const isShowed = localStorage.getItem("showed-unfinished-website");
+  if (isShowed) {
+    if (JSON.parse(isShowed)) {
+      setShowed(true);
+      return;
+    }
+  }
+  if (showed) return;
+  toast({
+    title: "Unfinished website",
+    description:
+      "This website is still under construction. Please check back later!",
+    variant: "destructive",
+    action: (
+      <ToastAction
+        altText="Never show again"
+        onClick={() => {
+          if (typeof localStorage === "undefined") return;
+          localStorage.setItem(
+            "showed-unfinished-website",
+            JSON.stringify(true),
+          );
+        }}
+      >
+        Dont show again
+      </ToastAction>
+    ),
+  });
+  setShowed(true);
+}
+
 export default function Home() {
   const { toast } = useToast();
   const [showed, setShowed] = React.useState(false);
   const { isLoaded, isSignedIn } = useUser();
   React.useState(() => {
-    if (typeof localStorage === "undefined") return;
-    const isShowed = localStorage.getItem("showed-unfinished-website");
-    if (isShowed) {
-      if (JSON.parse(isShowed)) {
-        setShowed(true);
-        return;
-      }
-    }
-    if (showed) return;
-    toast({
-      title: "Unfinished website",
-      description:
-        "This website is still under construction. Please check back later!",
-      variant: "destructive",
-      action: (
-        <ToastAction
-          altText="Never show again"
-          onClick={() => {
-            if (typeof localStorage === "undefined") return;
-            localStorage.setItem(
-              "showed-unfinished-website",
-              JSON.stringify(true),
-            );
-          }}
-        >
-          Dont show again
-        </ToastAction>
-      ),
-    });
-    setShowed(true);
+    onLoad(setShowed, showed, toast);
   });
 
   if (!isLoaded) return null;

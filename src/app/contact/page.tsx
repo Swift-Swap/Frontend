@@ -7,6 +7,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { outfit } from "@/lib/utils";
 import React from "react";
 
+interface ContactPlaceholder {
+  replyTo: string;
+  name: string;
+  message: string;
+}
+
+const contactPlaceholder: ContactPlaceholder = {
+  replyTo: "example@example.com",
+  name: "John Smith",
+  message: "Help I can't do so and so",
+};
+
 export default function Contact() {
   const [replyTo, setReplyTo] = React.useState("");
   const [name, setName] = React.useState("");
@@ -31,7 +43,7 @@ export default function Contact() {
             <Input
               id="replyto"
               type="email"
-              placeholder="example@example.com"
+              placeholder={contactPlaceholder.replyTo}
               value={replyTo}
               onChange={(e) => {
                 setReplyTo(e.target.value);
@@ -44,7 +56,7 @@ export default function Contact() {
               value={name}
               id="name"
               type="text"
-              placeholder="John Smith"
+              placeholder={contactPlaceholder.name}
               onChange={(e) => {
                 setName(e.target.value);
               }}
@@ -57,7 +69,7 @@ export default function Contact() {
           }}
           value={message}
           className="mt-4 h-[400px]"
-          placeholder="Help I can't do so and so"
+          placeholder={contactPlaceholder.message}
         />
         <Button variant="outline" className="mt-8 w-full py-8 border-[#283794]">
           {" "}
