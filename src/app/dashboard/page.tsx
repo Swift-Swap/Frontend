@@ -185,6 +185,11 @@ export default function Dashboard() {
                     />
                     <Delete listing_id={l.spaceid} setListings={setListings} />
                     <Button variant="ghost" className="top-0 left-0 absolute w-min hover:bg-transparent hover:text-green-300" onClick={async () => {
+                        if (pinned?.spaceid === l.spaceid) {
+                            setPinned(null)
+                            setListings(await getListings())
+                            return
+                        }
                         setPinned(l)
                         setListings(await getListings())
                     }}>
