@@ -13,6 +13,7 @@ import {
   parseSplitDate,
   spotPics,
   roboto,
+  convertToPrice,
 } from "@/lib/utils";
 import {
   Card,
@@ -23,7 +24,7 @@ import {
 
 import { format } from "date-fns";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ArrowRight, Eye, Info, Share, SlidersHorizontal } from "lucide-react";
+import { ArrowRight, DollarSign, Eye, Info, Share, SlidersHorizontal } from "lucide-react";
 import { useAuth, useUser } from "@clerk/nextjs";
 import {
   Dialog,
@@ -158,6 +159,11 @@ export default function Home() {
                 <p className="uppercase tracking-widest">
                   {listing.views === 1 ? "view" : "views"}
                 </p>
+              </div>
+              <div
+                className={`text-md md:text-lg flex items-center mt-2 gap-2 ${roboto.className} justify-center`}
+              >
+                  ${convertToPrice(start_date, end_date)}
               </div>
             </CardDescription>
             <Button
