@@ -111,7 +111,7 @@ export function convertToPrice(from: Date, to: Date): number {
   if (days <= 0) return 0;
   if (days === 5) return 20;
   const res = 3.625 * days + 1.375;
-  return res;
+  return Math.round(res * 100) / 100;
 }
 
 export function parseSplitDate(date: string): Date {
@@ -151,7 +151,7 @@ export async function getPurchased(): Promise<ListingRecently[]> {
     if (a_date > b_date) return 1;
     return 0;
   });
-  return sorted.slice(0, 5);
+  return sorted;
 }
 
 export function getDays(listings: ListingResponse[]): number {
