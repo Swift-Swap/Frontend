@@ -199,10 +199,10 @@ export default function Dashboard() {
                     </div>
                     <div className="flex flex-row gap-2 items-start">
                         <h4 className={`text-6xl font-bold ${outfit.className}`}>
-                            {recentlyBought?.length}
+                            {recentlyPurchase!.length}
                         </h4>
                         <div className="uppercase tracking-widest mt-2 text-xs">
-                            {recentlyBought?.length === 1 ? "spot" : "spots"}
+                            {recentlyPurchase!.length === 1 ? "spot" : "spots"}
                             <br />
                             bought
                         </div>
@@ -883,7 +883,7 @@ interface ListingProps {
 }
 
 function ListingItem(props: ListingProps) {
-    const { l, start, end, pinned, setPinned, setListings, setRecentlyBought} = props;
+    const { l, start, end, pinned, setPinned, setListings, setRecentlyBought } = props;
     return (
         <Card
             className="flex flex-col items-center text-center relative py-2 px-8 bg-transparent text-white w-full h-full"
@@ -938,10 +938,10 @@ function ListingItem(props: ListingProps) {
 function PurchaseHistory() {
     const [recent, setRecent] = React.useState<ListingRecently[]>([]);
     React.useEffect(() => {
-            async function main() {
-                setRecent(await getPurchased());
-            }
-            main()
+        async function main() {
+            setRecent(await getPurchased());
+        }
+        main()
     }, [])
     if (!recent) return null
     return (
