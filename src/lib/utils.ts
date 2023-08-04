@@ -23,8 +23,8 @@ export async function getListings(): Promise<ListingResponse[]> {
   const sorted = json.sort((a, b) => {
     const a_date = parseSplitDate(a.start_date);
     const b_date = parseSplitDate(b.start_date);
-    if (a_date < b_date) return -1;
-    if (a_date > b_date) return 1;
+    if (a_date > b_date) return -1;
+    if (a_date < b_date) return 1;
     return 0;
   });
   return sorted;
@@ -133,8 +133,8 @@ export async function getUserListings(): Promise<ListingResponse[]> {
   const sorted = result.sort((a, b) => {
     const a_date = parseSplitDate(a.start_date);
     const b_date = parseSplitDate(b.start_date);
-    if (a_date < b_date) return -1;
-    if (a_date > b_date) return 1;
+    if (a_date > b_date) return -1;
+    if (a_date < b_date) return 1;
     return 0;
   });
   return sorted;
@@ -147,8 +147,8 @@ export async function getPurchased(): Promise<ListingRecently[]> {
   const sorted = result.sort((a, b) => {
     const a_date = parseSplitDate(a.start_date);
     const b_date = parseSplitDate(b.start_date);
-    if (a_date < b_date) return -1;
-    if (a_date > b_date) return 1;
+    if (a_date > b_date) return -1;
+    if (a_date < b_date) return 1;
     return 0;
   });
   return sorted;
@@ -172,4 +172,11 @@ export function getRevenue(listings: ListingResponse[]): number {
     );
   }
   return total;
+}
+
+export const advanced_lots: Record<TAcceptedLot, string> = {
+    WAC: "Westlake Athletic Center",
+    PAC: "Performance and Arts Center",
+    "Tennis Courts": "Tennis Courts",
+    Stadium: "Football Stadium",
 }
