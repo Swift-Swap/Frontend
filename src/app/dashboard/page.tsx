@@ -303,7 +303,7 @@ export default function Dashboard() {
                 <div className="flex gap-4 items-center mb-4">
                     <h3 className="uppercase text-center tracking-widest">
                         {" "}
-                        Recent Spot Metrics / Info{" "}
+                        Pinned Spot Metrics / Info{" "}
                     </h3>
                     <Link href="#edit">
                         <Button
