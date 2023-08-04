@@ -176,7 +176,7 @@ export function getRevenue(listings: ListingResponse[]): number {
 
 export const advanced_lots: Record<TAcceptedLot, string> = {
   WAC: "Westlake Athletic Center",
-  PAC: "Performance and Arts Center",
+  PAC: "Performing Arts Center",
   "Tennis Courts": "Tennis Courts",
   Stadium: "Football Stadium",
 };
