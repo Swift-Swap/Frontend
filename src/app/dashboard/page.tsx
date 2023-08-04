@@ -312,7 +312,7 @@ export default function Dashboard() {
                     {recentlyPurchase?.length === 0 && (
                         <h1 className={`text-7xl w-full text-center ${outfit.className}`}>
                             {" "}
-                            {!recentlyBoughtLoaded ? "No Purchased Listings" : "Loading..."}{" "}
+                            {recentlyBoughtLoaded ? "No Purchased Listings" : "Loading..."}{" "}
                         </h1>
                     )}
                     {recentlyPurchase}
