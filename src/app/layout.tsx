@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { roboto } from "@/lib/utils";
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: "SwiftSwap",
@@ -25,6 +26,7 @@ export default function RootLayout({
             <main className="w-screen h-screen bg-background max-w-full overflow-x-hidden flex flex-col">
               <Nav />
               {children}
+              <Analytics />
               <Toaster />
             </main>
           </Providers>
