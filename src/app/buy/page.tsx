@@ -82,7 +82,7 @@ export default function Home() {
     }
     if (listings) {
       if (!moreInfo && info) {
-        const listing = listings.find((l) => l.spaceid === info);
+        const listing = listings.find((l) => l.listing_id === info);
         if (listing) {
           if (!user) return;
           if (listing.user_id === user?.id) {
@@ -132,14 +132,14 @@ export default function Home() {
       if (all) return true;
       return (
         currLots.includes(l.lot.toLowerCase()) &&
-        format(fromDate!, "yyyy-MM-dd") === l.start_date &&
-        format(toDate!, "yyyy-MM-dd") === l.end_date &&
+        format(fromDate!, "yyyy-MM-dd") === l.fromdate &&
+        format(toDate!, "yyyy-MM-dd") === l.todate &&
         (user ? l.user_id != user.id : true)
       );
     })
     .map((listing) => {
-      const start_date = parseSplitDate(listing.start_date);
-      const end_date = parseSplitDate(listing.end_date);
+      const start_date = parseSplitDate(listing.fromdate);
+      const end_date = parseSplitDate(listing.todate);
       const formatter = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -147,7 +147,7 @@ export default function Home() {
       return (
         <Card
           className={`h-fit w-fit flex flex-col gap-14 items-center text-center p-4 justify-between border-xl`}
-          key={listing.spaceid}
+          key={listing.listing_id}
         >
           <CardHeader className="flex flex-1 flex-col items-center justify-between w-fit gap-4">
             <CardTitle className="text-md md:text-xl">
@@ -156,7 +156,7 @@ export default function Home() {
             </CardTitle>
             <CardDescription className="text-sm md:text-md rounded-lg bg-primary px-2">
               {" "}
-              <p className="text-white">#{formatNumber(listing.spotnumber)} </p>
+              <p className="text-white">#{formatNumber(listing.spot_number)} </p>
             </CardDescription>
             <CardDescription
               className={`font-bold text-xl md:text-2xl ${outfit.className}`}
@@ -182,17 +182,17 @@ export default function Home() {
               className={`w-full text-xs flex items-center gap-2 uppercase tracking-widest ${outfit.className}`}
               onClick={async () => {
                 setMoreInfo(listing);
-                setInfo(listing.spaceid);
+                setInfo(listing.listing_id);
                 let seenItems = localStorage.getItem("seenListings");
                 if (!seenItems) seenItems = JSON.stringify([]);
                 const seenItemsParsed = JSON.parse(seenItems) as string[];
-                if (seenItemsParsed.includes(listing.spaceid)) return;
-                await fetch(`/api/listing/view?listing_id=${listing.spaceid}`, {
+                if (seenItemsParsed.includes(listing.listing_id)) return;
+                await fetch(`/api/listing/view?listing_id=${listing.listing_id}`, {
                   method: "POST",
                 });
                 localStorage.setItem(
                   "seenListings",
-                  JSON.stringify([...seenItemsParsed, listing.spaceid]),
+                  JSON.stringify([...seenItemsParsed, listing.listing_id]),
                 );
                 setListings(await getListings());
               }}
@@ -259,7 +259,7 @@ export default function Home() {
                 onClick={() => {
                   const text =
                     window.location.href.split("?")[0] +
-                    `?info=${moreInfo?.spaceid}`;
+                    `?info=${moreInfo?.listing_id}`;
                   if (!navigator.clipboard) {
                     // hacky mobile stuff
                     if (document.execCommand) {
@@ -293,13 +293,13 @@ export default function Home() {
           <DialogHeader>
             <DialogTitle className={`${outfit.className} text-3xl`}>
               {moreInfo
-                ? format(parseSplitDate(moreInfo.start_date), "PPP").split(
+                ? format(parseSplitDate(moreInfo.fromdate), "PPP").split(
                     ",",
                   )[0]
                 : ""}{" "}
               -{" "}
               {moreInfo
-                ? format(parseSplitDate(moreInfo.end_date), "PPP").split(",")[0]
+                ? format(parseSplitDate(moreInfo.todate), "PPP").split(",")[0]
                 : ""}
             </DialogTitle>
             <DialogDescription className="text-xs uppercase tracking-widest">
@@ -324,8 +324,8 @@ export default function Home() {
                   currency: "USD",
                 }).format(
                   convertToPrice(
-                    parseSplitDate(moreInfo!.start_date),
-                    parseSplitDate(moreInfo!.end_date),
+                    parseSplitDate(moreInfo!.fromdate),
+                    parseSplitDate(moreInfo!.todate),
                   ),
                 )}
               </>
@@ -338,7 +338,7 @@ export default function Home() {
                     title: "Buying...",
                   });
                   const res = await fetch(
-                    `/api/listing/buy?listing_id=${moreInfo?.spaceid}`,
+                    `/api/listing/buy?listing_id=${moreInfo?.listing_id}`,
                     { method: "POST" },
                   );
                   if (res.status === 400) {

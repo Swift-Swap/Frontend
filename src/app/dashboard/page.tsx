@@ -117,14 +117,14 @@ export default function Dashboard() {
     redirect("/perm-denied");
   }
   const listingsMapped = listings.map((l) => {
-    const start = parseSplitDate(l.start_date);
-    const end = parseSplitDate(l.end_date);
-    if (!l.bought) {
+    const start = parseSplitDate(l.fromdate);
+    const end = parseSplitDate(l.todate);
+    if (!l.sold) {
       return (
         <ListingItem
           setRecentlyBought={setRecentlyBought}
           l={l}
-          key={l.spaceid}
+          key={l.listing_id}
           end={end}
           start={start}
           pinned={pinned}
@@ -139,19 +139,19 @@ export default function Dashboard() {
     currency: "USD",
   });
   const recentlyPurchase = recentlyBought?.splice(0, 5).map((listing) => {
-    const start = parseSplitDate(listing.start_date);
-    const end = parseSplitDate(listing.end_date);
-    const sold = parseSplitDate(listing.date_bought);
+    const start = parseSplitDate(listing.fromdate);
+    const end = parseSplitDate(listing.todate);
+    const sold = parseSplitDate(listing.date_bought)
     return (
       <div
         className="p-4 flex flex-col border-4 rounded-2xl justify-between items-center w-full mb-4 border-[#B7B7B7]"
-        key={listing.spaceid}
+        key={listing.listing_id}
       >
         <div className="flex mb-4">
           {format(start, "MMM dd")} - {format(end, "MMM dd")}
         </div>
         <div className="px-2 rounded-md bg-primary mb-4">
-          #{formatNumber(listing.spotnumber)}
+          #{formatNumber(listing.spot_number)}
         </div>
         <h5
           className={`text-center font-bold text-3xl uppercase text-[#939393] ${outfit.className}`}
@@ -191,10 +191,10 @@ export default function Dashboard() {
         <div className="rounded-3xl border-4 border-[#B7B7B7] w-full p-10 flex justify-around mb-6">
           <div className="flex flex-row gap-2 items-start">
             <h4 className={`text-6xl font-bold ${outfit.className}`}>
-              {listings.filter((l) => l.bought).length}
+              {listings.filter((l) => l.sold).length}
             </h4>
             <div className="uppercase tracking-widest mt-2 text-xs">
-              {listings.filter((l) => l.bought).length === 1 ? "spot" : "spots"}
+              {listings.filter((l) => l.sold).length === 1 ? "spot" : "spots"}
               <br />
               sold
             </div>
@@ -282,7 +282,7 @@ export default function Dashboard() {
                 <h4
                   className={`text-6xl font-bold w-full text-center ${outfit.className}`}
                 >
-                  {pinned && `#${formatNumber(pinned.spotnumber)}`}
+                  {pinned && `#${formatNumber(pinned.spot_number)}`}
                 </h4>
                 <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
                   spot number
@@ -294,9 +294,9 @@ export default function Dashboard() {
                 >
                   {pinned &&
                     `${format(
-                      parseSplitDate(pinned?.start_date),
+                      parseSplitDate(pinned?.fromdate),
                       "MMM dd",
-                    )} - ${format(parseSplitDate(pinned?.end_date), "MMM dd")}`}
+                    )} - ${format(parseSplitDate(pinned?.todate), "MMM dd")}`}
                 </h4>
                 <div className="uppercase w-full text-center tracking-widest mt-2 text-xs">
                   Date range
@@ -549,17 +549,19 @@ function Delete(props: DeleteSheetProps) {
                 {
                   method: "DELETE",
                 },
-              );
-              if (res.status === 200) {
+              )
+              const status = res.status;
+              if (status === 200) {
+                console.log(status === 200)
                 toast({
                   title: "Space deleted",
                 });
-              } else if (res.status === 401) {
+              } else if (status === 401) {
                 redirect("/sign-in");
               } else {
                 toast({
                   title: `${
-                    res.status === 500
+                    status === 500
                       ? "Internal server error"
                       : "Unknown error"
                   }`,
@@ -567,9 +569,6 @@ function Delete(props: DeleteSheetProps) {
                   variant: "destructive",
                 });
               }
-              toast({
-                title: "Space deleted",
-              });
               props.setListings(await getUserListings());
               return;
             }}
@@ -751,7 +750,7 @@ function AddSheet(props: AddSheetProps) {
                 const new_from = format(from!, "yyyy-MM-dd");
                 const new_to = format(to!, "yyyy-MM-dd");
                 const body: CreateListing = {
-                  spotnumber: lot,
+                  spot_number: lot,
                   lot: lotName,
                   fromdate: new_from,
                   todate: new_to,
@@ -897,7 +896,7 @@ function ListingItem(props: ListingProps) {
   return (
     <Card
       className="flex flex-col items-center text-center relative py-2 px-8 bg-transparent text-white w-full h-full"
-      key={l.spotnumber}
+      key={l.spot_number}
     >
       <CardHeader className="flex-1 flex flex-col justify-between">
         <CardTitle className="text-md md:text-xl">
@@ -907,7 +906,7 @@ function ListingItem(props: ListingProps) {
         <CardDescription className="text-sm md:text-md flex justify-center">
           {" "}
           <div className="px-2 rounded-md w-min bg-primary mb-4 text-white">
-            #{formatNumber(l.spotnumber)}
+            #{formatNumber(l.spot_number)}
           </div>
         </CardDescription>
         <CardDescription
@@ -917,27 +916,27 @@ function ListingItem(props: ListingProps) {
           {l.lot}{" "}
         </CardDescription>
         <EditSheet
-          lot={l.spotnumber}
+          lot={l.spot_number}
           lotName={l.lot}
           toDate={end}
           fromDate={start}
-          listing_id={l.spaceid}
+          listing_id={l.listing_id}
           setListings={setListings}
         />
-        <Delete listing_id={l.spaceid} setListings={setListings} />
+        <Delete listing_id={l.listing_id} setListings={setListings} />
         <Button
           variant="ghost"
           className="top-0 left-0 absolute w-min hover:bg-transparent hover:text-primary"
           onClick={async () => {
-            if (pinned?.spaceid === l.spaceid) {
+            if (pinned?.listing_id === l.listing_id) {
               setPinned(null);
               return;
             }
             setPinned(l);
           }}
         >
-          {pinned?.spaceid === l.spaceid && <PinOff />}
-          {pinned?.spaceid !== l.spaceid && <Pin />}
+          {pinned?.listing_id === l.listing_id && <PinOff />}
+          {pinned?.listing_id !== l.listing_id && <Pin />}
         </Button>
       </CardHeader>
     </Card>
@@ -975,15 +974,15 @@ function PurchaseHistory() {
           </TableHeader>
           <TableBody>
             {recent.map((l) => (
-              <TableRow key={l.spaceid}>
+              <TableRow key={l.listing_id}>
                 <TableCell className="font-medium">
                   $
                   {convertToPrice(
-                    parseSplitDate(l.start_date),
-                    parseSplitDate(l.end_date),
+                    parseSplitDate(l.fromdate),
+                    parseSplitDate(l.todate),
                   )}
                 </TableCell>
-                <TableCell>#{formatNumber(l.spotnumber)}</TableCell>
+                <TableCell>#{formatNumber(l.spot_number)}</TableCell>
                 <TableCell className="text-center">{l.lot}</TableCell>
                 <TableCell className="text-right">
                   {format(parseSplitDate(l.date_bought), "MM/dd/yyyy")}

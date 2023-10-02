@@ -21,8 +21,8 @@ export async function getListings(): Promise<ListingResponse[]> {
   const json = (await res.json()) as ListingResponse[];
   if (!json) return [];
   const sorted = json.sort((a, b) => {
-    const a_date = parseSplitDate(a.start_date);
-    const b_date = parseSplitDate(b.start_date);
+    const a_date = parseSplitDate(a.fromdate);
+    const b_date = parseSplitDate(b.fromdate);
     if (a_date > b_date) return -1;
     if (a_date < b_date) return 1;
     return 0;
@@ -47,7 +47,7 @@ export interface EditListing {
   todate: string;
 }
 export interface CreateListing {
-  spotnumber: number;
+  spot_number: number;
   lot: TAcceptedLot;
   fromdate: string;
   todate: string;
@@ -55,15 +55,16 @@ export interface CreateListing {
 
 export interface ListingResponse {
   views: number;
-  bought: boolean;
-  spaceid: string;
-  spotnumber: number;
+  sold: boolean;
+  listing_id: string;
+  spot_number: number;
   lot: TAcceptedLot;
   days: number;
-  start_date: string;
-  end_date: string;
+  buyer_id: string | null
+  fromdate: string;
+  todate: string;
   price: number;
-  user_id: string;
+  owner_id: string;
 }
 
 export interface Stats {
@@ -131,8 +132,8 @@ export async function getUserListings(): Promise<ListingResponse[]> {
   const result = json as ListingResponse[];
   if (!result) return [];
   const sorted = result.sort((a, b) => {
-    const a_date = parseSplitDate(a.start_date);
-    const b_date = parseSplitDate(b.start_date);
+    const a_date = parseSplitDate(a.fromdate);
+    const b_date = parseSplitDate(b.fromdate);
     if (a_date > b_date) return -1;
     if (a_date < b_date) return 1;
     return 0;
@@ -145,8 +146,8 @@ export async function getPurchased(): Promise<ListingRecently[]> {
   const json = await res.json();
   const result = json as ListingRecently[];
   const sorted = result.sort((a, b) => {
-    const a_date = parseSplitDate(a.start_date);
-    const b_date = parseSplitDate(b.start_date);
+    const a_date = parseSplitDate(a.fromdate);
+    const b_date = parseSplitDate(b.fromdate);
     if (a_date > b_date) return -1;
     if (a_date < b_date) return 1;
     return 0;
@@ -155,7 +156,7 @@ export async function getPurchased(): Promise<ListingRecently[]> {
 }
 
 export function getDays(listings: ListingResponse[]): number {
-  const bought = listings.filter((l) => l.bought);
+  const bought = listings.filter((l) => l.sold);
   let total = 0;
   for (const listing of bought) {
     total += listing.days;
@@ -163,12 +164,12 @@ export function getDays(listings: ListingResponse[]): number {
   return total;
 }
 export function getRevenue(listings: ListingResponse[]): number {
-  const bought = listings.filter((l) => l.bought);
+  const bought = listings.filter((l) => l.sold);
   let total = 0;
   for (const listing of bought) {
     total += convertToPrice(
-      parseSplitDate(listing.start_date),
-      parseSplitDate(listing.end_date),
+      parseSplitDate(listing.fromdate),
+      parseSplitDate(listing.todate),
     );
   }
   return total;
