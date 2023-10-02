@@ -44,11 +44,11 @@ export default function About() {
             suitable match is found, the students can then pay and swap through
             the platform.
           </li>
-          <li className="mb-4">
+          {/* <li className="mb-4">
             <span className="font-semibold">Community Ratings</span>: To ensure
             a positive experience, students can provide ratings and feedback
             after each swap.
-          </li>
+          </li> MAYBE LATER*/}
         </ol>
         <h2 className="text-2xl font-bold mt-10"> Credits </h2>
         <p className="mt-6 ">
