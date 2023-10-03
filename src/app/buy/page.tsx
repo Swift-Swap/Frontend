@@ -121,7 +121,7 @@ export default function Home() {
         const listing = listings.find((l) => l.listing_id === info);
         if (listing) {
           if (!user) return;
-          if (listing.user_id === user?.id) {
+          if (listing.owner_id === user?.id) {
             redirect("/dashboard#edit");
           }
           setMoreInfo(listing);
@@ -164,14 +164,14 @@ export default function Home() {
   });
   const listingsMap = listings
     .filter((l) => {
-      if (l.bought) return false;
-      if (user && l.user_id === user.id) return false;
+      if (l.sold) return false;
+      if (user && l.owner_id=== user.id) return false;
       if (all) return true;
       return (
         currLots.includes(l.lot.toLowerCase()) &&
         format(fromDate!, "yyyy-MM-dd") === l.fromdate &&
         format(toDate!, "yyyy-MM-dd") === l.todate &&
-        (user ? l.user_id != user.id : true)
+        (user ? l.owner_id!= user.id : true)
       );
     })
     .map((listing) => {
