@@ -54,6 +54,8 @@ export interface CreateListing {
 }
 
 export interface ListingResponse {
+  user_id: string;
+  bought: any;
   views: number;
   sold: boolean;
   listing_id: string;
