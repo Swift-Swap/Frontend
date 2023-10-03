@@ -81,6 +81,40 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 
+class Whitelist {
+  private list: string[];
+
+  constructor() {
+    this.list = ["zw96042@gmail.com","zakethegr8@gmail.com", "vaibhav@vaibhavvenkat.com"];
+  }
+
+  // Add a string to the whitelist
+  addString(str: string) {
+    if (!this.list.includes(str)) {
+      this.list.push(str);
+    }
+  }
+
+  // Check if a string is in the whitelist
+  contains(str: string): boolean {
+    return this.list.includes(str);
+  }
+
+  // Remove a string from the whitelist
+  removeString(str: string) {
+    const index = this.list.indexOf(str);
+    if (index !== -1) {
+      this.list.splice(index, 1);
+    }
+  }
+
+  // Get the entire whitelist
+  getList(): string[] {
+    return this.list;
+  }
+}
+const whitelist = new Whitelist();
+
 export default function Dashboard() {
   const { isLoaded, user } = useUser();
   const [listings, setListings] = React.useState<ListingResponse[] | null>([]);
@@ -112,7 +146,8 @@ export default function Dashboard() {
   if (
     user &&
     user.primaryEmailAddress &&
-    user.primaryEmailAddress.emailAddress.split("@")[1] !== "eanesisd.net"
+    user.primaryEmailAddress.emailAddress.split("@")[1] !== "eanesisd.net" &&
+    whitelist.contains(user.primaryEmailAddress.emailAddress) === false
   ) {
     redirect("/perm-denied");
   }

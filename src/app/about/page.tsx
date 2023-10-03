@@ -63,21 +63,21 @@ export default function About() {
           while{" "}
           <Link
             className="hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-[2px] before:origin-left before:transition-transform before:duration-300 before:scale-x-0 before:bg-foreground before:absolute before:left-0 before:bottom-0"
+            href="https://github.com/vibovenkat123"
+            target="_blank"
+          >
+            Vaibhav Venkat
+          </Link>{" "}
+          has contributed and
+          <Link
+            className="hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-[2px] before:origin-left before:transition-transform before:duration-300 before:scale-x-0 before:bg-foreground before:absolute before:left-0 before:bottom-0"
             target="_blank"
             href="https://github.com/aadijo"
           >
             {" "}
             Advait Johari{" "}
           </Link>{" "}
-          and{" "}
-          <Link
-            className="hover:before:scale-x-100 hover:before:origin-left relative before:w-full before:h-[2px] before:origin-left before:transition-transform before:duration-300 before:scale-x-0 before:bg-foreground before:absolute before:left-0 before:bottom-0"
-            href="https://github.com/vibovenkat123"
-            target="_blank"
-          >
-            Vaibhav Venkat
-          </Link>{" "}
-          are contributors.
+          has helped with beta testing.
         </p>
         <h2 className="text-2xl font-bold mt-10"> Feedback and Support </h2>
         <p className="mt-6 ">
