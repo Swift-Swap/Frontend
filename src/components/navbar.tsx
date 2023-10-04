@@ -39,6 +39,11 @@ export default function Nav() {
           </SheetTrigger>
           <SheetContent side="right">
             <div className="py-4 gap-4 flex flex-col w-full">
+              <Link href="/privacy">
+                <Button className="w-full flex justify-start" variant="ghost">
+                  Privacy Policy
+                </Button>
+              </Link>
               <Link href="/about">
                 <Button className="w-full flex justify-start" variant="ghost">
                   About
@@ -96,6 +101,9 @@ export default function Nav() {
         </Sheet>
       </div>
       <div className="px-4 gap-12 items-center md:flex hidden">
+        <Link href="/privacy">
+          <Button variant="ghost">Privacy</Button>
+        </Link>
         <Link href="/about">
           <Button variant="ghost">About</Button>
         </Link>
