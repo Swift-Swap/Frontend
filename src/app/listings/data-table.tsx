@@ -10,6 +10,7 @@ import {
   useReactTable,
   ColumnFiltersState,
   getFilteredRowModel,
+  FilterFn,
 } from "@tanstack/react-table"
 
 import {
@@ -27,6 +28,21 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
+const filterDate: FilterFn<any> = (row, l, value, p) => {
+  let offset = value.getTimezoneOffset();
+  value = new Date(value.getTime() - (offset*60*1000))
+  const val = value
+  let from_date = row.getValue("fromdate") as Date
+  offset = from_date.getTimezoneOffset();
+  from_date = new Date(from_date.getTime() - (offset*60*1000))
+  const val2 = from_date
+  let to_date = row.getValue("todate") as Date
+  offset = to_date.getTimezoneOffset();
+  to_date= new Date(to_date.getTime() - (offset*60*1000))
+  const val3 = to_date
+  return val2 <= val && val <= val3;
+}
+// This type is used to define the shape of our data.
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -44,6 +60,9 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    filterFns: {
+      global: filterDate,
+    },
     state: {
       sorting,
       columnFilters,

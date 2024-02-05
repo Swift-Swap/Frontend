@@ -2,12 +2,26 @@
 import { ArrowUpDown, CalendarClock, MoreHorizontal } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ListingResponse } from "@/lib/utils"
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, FilterFn, filterFns } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 
-// This type is used to define the shape of our data.
+const filterDate: FilterFn<any> = (row, l, value, p) => {
+  let offset = value.getTimezoneOffset();
+  value = new Date(value.getTime() - (offset*60*1000))
+  const val = value
+  let from_date: string | Date = row.getValue("fromdate") as string
+  from_date = new Date(Date.parse(from_date))
+  offset = from_date.getTimezoneOffset();
+  from_date = new Date(from_date.getTime() - (offset*60*1000))
+  const val2 = from_date
+  let to_date: string | Date = row.getValue("todate") as string
+  to_date = new Date(Date.parse(to_date));
+  offset = to_date.getTimezoneOffset();
+  to_date= new Date(to_date.getTime() - (offset*60*1000))
+  const val3 = to_date
+  return val2 <= val && val <= val3;
+}
 // You can use a Zod schema here if you want.
-
 export const columns: ColumnDef<ListingResponse>[] = [
   {
     accessorKey: "sold",
@@ -34,7 +48,21 @@ export const columns: ColumnDef<ListingResponse>[] = [
   },
   {
     accessorKey: "fromdate",
-    header: "From",
+    filterFn: filterDate,
+    header: ({ column }) => {
+      let yourDate = new Date();
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => {
+            column.setFilterValue(yourDate);
+          }}
+        >
+          From
+          <CalendarClock className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({row}) => (
       <>
         {new Intl.DateTimeFormat('en-US', { dateStyle: 'short' }).format(Date.parse(row.getValue("fromdate")))}
@@ -43,7 +71,21 @@ export const columns: ColumnDef<ListingResponse>[] = [
   },
   {
     accessorKey: "todate",
-    header: "To",
+    filterFn: filterDate,
+    header: ({ column }) => {
+      let yourDate = new Date();
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => {
+            column.setFilterValue(yourDate);
+          }}
+        >
+          To
+          <CalendarClock className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({row}) => (
       <>
         {new Intl.DateTimeFormat('en-US', { dateStyle: 'short' }).format(Date.parse(row.getValue("todate")))}
@@ -56,24 +98,7 @@ export const columns: ColumnDef<ListingResponse>[] = [
   },
   {
     accessorKey: "date_bought",
-    header: ({ column }) => {
-      let yourDate = new Date();
-      const offset = yourDate.getTimezoneOffset();
-      yourDate = new Date(yourDate.getTime() - (offset*60*1000))
-      const date = yourDate.toISOString().split('T')[0]
-      console.log(date)
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => {
-            column.setFilterValue(column.getFilterValue() != null ? null : date);
-          }}
-        >
-          Date Bought
-          <CalendarClock className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    header: "Date Bought"
   },
 ]
 
