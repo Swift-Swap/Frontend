@@ -12,9 +12,22 @@ import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
 import { outfit } from "@/lib/utils";
 export default function Nav() {
-  const { isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn, user} = useUser();
   const { systemTheme } = useTheme();
+  const people_good = [
+    "vv88256@eanesisd.net",
+    "creese@eanesisd.net",
+    "zw96042@eanesisd.net",
+    "hgaddis@eanesisd.net",
+    "sramsey@eanesisd.net",
+    "dparks@eeanesisd.net",
+    "msaldana@eanesisd.net",
+    "legal@eanesisd.net"
+  ]
   if (!isLoaded) return null;
+  if (isSignedIn) {
+    console.log(user?.primaryEmailAddress)
+  }
   return (
     <nav
       className={`p-4 border-b-2 border-b-foreground-50 flex gap-24 w-full justify-between bg-background items-center px-2 md:px-8 ${outfit.className}`}
@@ -65,6 +78,14 @@ export default function Nav() {
                 <Link href="/dashboard">
                   <Button variant="ghost" className="w-full flex justify-start">
                     Dashboard
+                  </Button>
+                </Link>
+              )}
+              {isSignedIn && user!= null && user.primaryEmailAddress != null &&
+                people_good.includes(user.primaryEmailAddress.emailAddress) && (
+                <Link href="/listings">
+                  <Button variant="ghost" className="w-full flex justify-start">
+                      Listing
                   </Button>
                 </Link>
               )}
@@ -125,6 +146,14 @@ export default function Nav() {
             </Button>
           </Link>
         )}
+      {isSignedIn && user!= null && user.primaryEmailAddress!= null &&
+        people_good.includes(user.primaryEmailAddress.emailAddress) && (
+        <Link href="/listings">
+          <Button variant="ghost" className="w-full flex justify-start">
+              Listing
+          </Button>
+        </Link>
+      )}
         <Link href={`${isSignedIn ? "/buy" : "/sign-up"}`}>
           <div className="bg-gradient-to-b from-primary-red to-primary-blue !p-[0.13em] flex justify-center items-center rounded-lg">
             <Button className="text-foreground bg-background hover:bg-background/0 hover:text-white w-full h-max">

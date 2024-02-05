@@ -1,9 +1,9 @@
-import { auth } from "@clerk/nextjs";
+import { ListingResponse } from "@/lib/utils";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import {ListingResponse} from "@/lib/utils";
 
 export async function GET() {
-    const { userId } = auth();
+    const {userId} = auth();
     const res = await fetch(
         `https://sppeb237h3wyc2s47q44lubmli0ijory.lambda-url.us-east-2.on.aws/api/v1/listings?user_id=${userId}`,
         {
@@ -14,8 +14,9 @@ export async function GET() {
             },
         },
     );
-    const json = await res.json() as ListingResponse[];
-    const filtered = json.filter((l) => l.buyer_id === userId && userId != null && l.sold);
-    return NextResponse.json(filtered, { status: res.status });
-
+    const rawJson = await res.json();
+    console.log(res.status);
+    const json = rawJson as ListingResponse[];
+    const status = res.status;
+    return NextResponse.json(json, {status});
 }

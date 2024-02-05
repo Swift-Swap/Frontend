@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 export async function GET() {
     const {userId} = auth();
     const res = await fetch(
-        `https://sppeb237h3wyc2s47q44lubmli0ijory.lambda-url.us-east-2.on.aws/api/v1/listings`,
+        `https://sppeb237h3wyc2s47q44lubmli0ijory.lambda-url.us-east-2.on.aws/api/v1/listings?user_id=${userId}`,
         {
             method: "GET",
             headers: {
@@ -34,6 +34,7 @@ export async function GET() {
         },
     );
     const rawJson = await res.json();
+    console.log(res.status);
     const json = rawJson as ListingResponse[];
     let filtered = json.filter((l) => !l.sold && l.owner_id != userId);
     const status = res.status;

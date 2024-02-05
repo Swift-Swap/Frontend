@@ -134,8 +134,7 @@ export default function Home() {
   if (
     user &&
     user.primaryEmailAddress &&
-    user.primaryEmailAddress.emailAddress.split("@")[1] !== "eanesisd.net" &&
-    whitelist.contains(user.primaryEmailAddress.emailAddress) === false
+    user.primaryEmailAddress.emailAddress.split("@")[1] !== "eanesisd.net"
   ) {
     redirect("/perm-denied");
   }

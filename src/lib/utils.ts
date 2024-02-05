@@ -10,12 +10,35 @@ import { StaticImageData } from "next/image";
 import { Roboto } from "next/font/google";
 export const outfit = Outfit({ display: "swap", subsets: ["latin"] });
 
+export  const people_good = [
+    "vv88256@eanesisd.net",
+    "zw96042@eanesisd.net",
+    "creese@eanesisd.net",
+    "hgaddis@eanesisd.net",
+    "sramsey@eanesisd.net",
+    "dparks@eeanesisd.net",
+    "msaldana@eanesisd.net",
+    "legal@eanesisd.net"
+  ]
 export const roboto = Roboto({
   display: "swap",
   weight: ["400", "500", "700"],
   subsets: ["latin"],
 });
 
+export async function getListingsAdmin(): Promise<ListingResponse[]> {
+  const res = await fetch("/api/listing/admin", { method: "GET" });
+  const json = (await res.json()) as ListingResponse[];
+  if (!json) return [];
+  const sorted = json.sort((a, b) => {
+    const a_date = parseSplitDate(a.fromdate);
+    const b_date = parseSplitDate(b.fromdate);
+    if (a_date > b_date) return -1;
+    if (a_date < b_date) return 1;
+    return 0;
+  });
+  return sorted;
+}
 export async function getListings(): Promise<ListingResponse[]> {
   const res = await fetch("/api/listing", { method: "GET" });
   const json = (await res.json()) as ListingResponse[];
@@ -67,6 +90,7 @@ export interface ListingResponse {
   todate: string;
   price: number;
   owner_id: string;
+  date_bought: string | null;
 }
 
 export interface Stats {
