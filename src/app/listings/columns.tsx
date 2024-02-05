@@ -48,21 +48,7 @@ export const columns: ColumnDef<ListingResponse>[] = [
   },
   {
     accessorKey: "fromdate",
-    filterFn: filterDate,
-    header: ({ column }) => {
-      let yourDate = new Date();
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => {
-            column.setFilterValue(yourDate);
-          }}
-        >
-          From
-          <CalendarClock className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    header: "From",
     cell: ({row}) => (
       <>
         {new Intl.DateTimeFormat('en-US', { dateStyle: 'short' }).format(Date.parse(row.getValue("fromdate")))}
@@ -78,7 +64,7 @@ export const columns: ColumnDef<ListingResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => {
-            column.setFilterValue(yourDate);
+            column.setFilterValue(column.getFilterValue() != null ? null: yourDate);
           }}
         >
           To
