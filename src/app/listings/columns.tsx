@@ -77,9 +77,5 @@ export const columns: ColumnDef<ListingResponse>[] = [
     accessorKey: "spot_number",
     header: "Spot #",
   },
-  {
-    accessorKey: "date_bought",
-    header: "Date Bought"
-  },
 ]
 
