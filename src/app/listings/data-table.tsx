@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
       <Button variant="outline" onClick={() => {
         const promise = exportExcel(table, "listings")
       }}>
-        Export
+        Export CSV
       </Button>
     </div>
   )
