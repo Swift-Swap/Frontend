@@ -1,5 +1,4 @@
 "use client"
-
 import {
    SortingState,
   getPaginationRowModel,
@@ -22,6 +21,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import React from "react"
+import { Button } from "@/components/ui/button"
+import exportExcel from "./excel"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -51,7 +52,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
-  const table = useReactTable({
+  const [table, setTable] = React.useState(useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -67,7 +68,8 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
-  })
+  },
+  ))
   return (
     <div className="rounded-md border md:w-3/4 sm:w-5/6 xs:w-1/2">
       <Table>
@@ -113,7 +115,11 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <Button variant="outline" onClick={() => {
+        const promise = exportExcel(table, "listings")
+      }}>
+        Export
+      </Button>
     </div>
   )
 }
-

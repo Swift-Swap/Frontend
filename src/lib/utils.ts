@@ -8,6 +8,7 @@ import pac from "../../public/pac.png";
 import stadium from "../../public/stadium.png";
 import { StaticImageData } from "next/image";
 import { Roboto } from "next/font/google";
+import { User } from "@clerk/nextjs/server";
 export const outfit = Outfit({ display: "swap", subsets: ["latin"] });
 
 export  const people_good = [
@@ -26,6 +27,13 @@ export const roboto = Roboto({
   subsets: ["latin"],
 });
 
+export async function getAdminUser(user_id: string): Promise<User | null> {
+  const res = await fetch(`/api/listing/admin/user?user_id=${user_id}`, { method: "GET" });
+  if (res.status != 200) return null;
+  const raw = await res.json();
+  const json = raw as User;
+  return json;
+}
 export async function getListingsAdmin(): Promise<ListingResponse[]> {
   const res = await fetch("/api/listing/admin", { method: "GET" });
   const json = (await res.json()) as ListingResponse[];
