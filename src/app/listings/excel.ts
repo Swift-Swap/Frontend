@@ -3,7 +3,6 @@ import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver';
 
 export default async function exportExcel(
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	table: Table<any>,
 	filename: string,
 	applyFilters = true

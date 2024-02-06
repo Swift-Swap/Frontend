@@ -19,7 +19,7 @@ export default function Listings() {
       setLoaded(true);
     }
     main();
-  }, [listings]);
+  }, [listings, loaded]);
   if (
     user &&
     user.primaryEmailAddress &&
