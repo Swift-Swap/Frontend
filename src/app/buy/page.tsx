@@ -22,6 +22,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { format } from "date-fns";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -182,10 +183,10 @@ export default function Home() {
       });
       return (
         <Card
-          className={`h-fit w-fit flex flex-col gap-14 items-center text-center p-4 justify-between border-xl`}
+          className={`h-fit w-full flex flex-col gap-6 items-center text-center p-4 justify-between border-xl`}
           key={listing.listing_id}
         >
-          <CardHeader className="flex flex-1 flex-col items-center justify-between w-fit gap-4">
+          <CardHeader className="flex flex-1 flex-col items-center justify-between w-full gap-2">
             <CardTitle className="text-md md:text-xl">
               {" "}
               {format(start_date, "LLL dd")} - {format(end_date, "LLL dd")}{" "}
@@ -266,15 +267,31 @@ export default function Home() {
       </Sheet>
       <div className={`grid w-full flex-1 place-items-center`}>
         <div
-          className={`w-full place-items-center grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 p-12`}
+          className={`w-full place-items-center grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4 p-12`}
         >
-          {listingsMap}
-          {listingsMap.length === 0 && (
+          {!loaded && (
+            <>
+              {Array.from({ length: 12 }).map((_, i) => (
+                <Card
+                  className="h-fit w-full flex flex-col gap-6 items-center text-center p-4 justify-between border-xl"
+                  key={i}
+                >
+                  <CardHeader className="flex flex-1 flex-col items-center justify-between w-full gap-2">
+                    <Skeleton className="h-6 w-32" />
+                    <Skeleton className="h-6 w-12 rounded-lg" />
+                    <Skeleton className="h-8 w-32" />
+                    <Skeleton className="h-5 w-20" />
+                    <Skeleton className="h-6 w-20" />
+                    <Skeleton className="h-9 w-full rounded-md" />
+                  </CardHeader>
+                </Card>
+              ))}
+            </>
+          )}
+          {loaded && listingsMap}
+          {loaded && listingsMap.length === 0 && (
             <div className="flex flex-col items-center justify-center">
-              <h1 className="text-3xl">
-                {" "}
-                {loaded ? "There are no spots" : "Loading..."}{" "}
-              </h1>
+              <h1 className="text-3xl">There are no spots</h1>
             </div>
           )}
         </div>
