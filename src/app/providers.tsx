@@ -9,7 +9,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       enableSystem
-      forcedTheme={path === "/dashboard" ? "dark" : undefined}
+      forcedTheme={path === "/admin" ? "dark" : undefined}
     >
       {children}
     </ThemeProvider>

@@ -10,5 +10,5 @@ export default authMiddleware({
 });
 
 export const config = {
-  matcher: ["/(api|trpc)(.*)", "/buy", "/dashboard"],
+  matcher: ["/(api|trpc)(.*)", "/buy"],
 };

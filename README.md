@@ -20,9 +20,28 @@ Match and Swap: When a suitable match is found, the students can then pay and sw
 
 Community Ratings: To ensure a positive experience, students can provide ratings and feedback after each swap.
 
+# Technology Stack
+
+Swift Swap Ⓟ is built with modern, scalable technologies:
+
+- **Frontend**: Next.js 13 with React and TypeScript
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **Authentication**: Clerk for secure user management
+- **Database**: Upstash Redis for fast, serverless data storage
+- **Deployment**: Vercel for seamless continuous deployment
+
+## Quick Start
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up environment variables (see `env.template`)
+4. Run development server: `npm run dev`
+
+For detailed setup instructions with Upstash Redis, see [UPSTASH_QUICKSTART.md](UPSTASH_QUICKSTART.md).
+
 # People
 
-Swift Swap is founded and managed by [Zachary Wilson](https://github.com/zw96042) while [Advait Johari](https://github.com/aadijo) and [Vaibhav Venkat](https://github.com/vibovenkat123) are contributors.
+Swift Swap is founded and managed by [Zachary Wilson](https://github.com/zw96042) while [Advait Johari](https://github.com/aadijo), [Vaibhav Venkat](https://github.com/vibovenkat123), and [Rahil Desai](https://github.com/Rahil-Desai) are contributors.
 
 # Contributing
 

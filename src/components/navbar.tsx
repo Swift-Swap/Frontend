@@ -75,7 +75,7 @@ export default function Nav() {
                 </Link>
               )}
               {isSignedIn && (
-                <Link href="/dashboard">
+                <Link href="/">
                   <Button variant="ghost" className="w-full flex justify-start">
                     Dashboard
                   </Button>
@@ -86,6 +86,13 @@ export default function Nav() {
                 <Link href="/listings">
                   <Button variant="ghost" className="w-full flex justify-start">
                       Listing
+                  </Button>
+                </Link>
+              )}
+              {isSignedIn && user?.primaryEmailAddress?.emailAddress === 'rd92052@eanesisd.net' && (
+                <Link href="/admin">
+                  <Button variant="ghost" className="w-full flex justify-start">
+                    Admin
                   </Button>
                 </Link>
               )}
@@ -137,7 +144,7 @@ export default function Nav() {
           </Link>
         )}
         {isSignedIn && (
-          <Link href="/dashboard">
+          <Link href="/">
             <Button
               variant="outline"
               className="border-primary-blue w-full flex justify-start"
@@ -151,6 +158,13 @@ export default function Nav() {
         <Link href="/listings">
           <Button variant="ghost" className="w-full flex justify-start">
               Listing
+          </Button>
+        </Link>
+      )}
+      {isSignedIn && user?.primaryEmailAddress?.emailAddress === 'rd92052@eanesisd.net' && (
+        <Link href="/admin">
+          <Button variant="ghost">
+            Admin
           </Button>
         </Link>
       )}

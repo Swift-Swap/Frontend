@@ -123,7 +123,7 @@ export default function Home() {
         if (listing) {
           if (!user) return;
           if (listing.owner_id === user?.id) {
-            redirect("/dashboard#edit");
+            redirect("/#edit");
           }
           setMoreInfo(listing);
         }
